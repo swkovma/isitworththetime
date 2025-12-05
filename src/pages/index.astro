@@ -25,15 +25,15 @@ const timeSavings = [
 ];
 ---
 
-<Layout title="Time Saver Calculator">
+<Layout title="Is It Worth The Time?" description="Calculate how much to spend on time-saving tools based on your salary and the time you'll save.">
   <main class="min-h-screen">
     <div class="site-section py-12 lg:py-20">
       <header class="text-center mb-12">
         <h1 class="text-4xl lg:text-5xl font-semibold text-slate-800 dark:text-slate-100 mb-2">
-          Time Saver Calculator
+          Is it worth the time?
         </h1>
         <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-          How much should you spend on something that saves you time?
+          Showing you how much to spend on something that saves you time
         </p>
       </header>
 
@@ -56,10 +56,18 @@ const timeSavings = [
         </div>
 
         <div class="billing-toggle-container">
-          <label class="block text-slate-700 dark:text-slate-300 font-medium mb-2">Pay per</label>
+          <label class="block text-slate-700 dark:text-slate-300 font-medium mb-2">Pay Per</label>
           <div class="billing-toggle">
             <button type="button" class="toggle-btn active" data-period="monthly">Month</button>
             <button type="button" class="toggle-btn" data-period="annual">Year</button>
+          </div>
+        </div>
+
+        <div class="spend-toggle-container">
+          <label class="block text-slate-700 dark:text-slate-300 font-medium mb-2">Spend</label>
+          <div class="spend-toggle">
+            <button type="button" class="toggle-btn active" data-spend="money">Money</button>
+            <button type="button" class="toggle-btn" data-spend="time">Time</button>
           </div>
         </div>
       </div>
@@ -104,11 +112,18 @@ const timeSavings = [
           Each cell shows how much you could reasonably spend on a tool or service
           that saves you a specific amount of time at a given frequency.
           Toggle between monthly and yearly to see the equivalent subscription cost.
+          Toggle between money and time to see the value or time that you're saving.
           Based on 2,000 working hours per year (8 hrs × 250 days).
         </p>
       </div>
 
-      <footer class="footer">
+      <footer class="footer mt-12">
+        <a href="https://github.com/hoxxep/isitworththetime" target="_blank" rel="noopener noreferrer" class="footer-link">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          Star on GitHub
+        </a>
         <a href="https://xkcd.com/1205/" target="_blank" rel="noopener noreferrer" class="footer-link">
           <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -116,12 +131,6 @@ const timeSavings = [
             <line x1="10" y1="14" x2="21" y2="3"></line>
           </svg>
           Based on xkcd #1205
-        </a>
-        <a href="https://github.com/liamstevens111/time-saver" target="_blank" rel="noopener noreferrer" class="footer-link github-link">
-          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-          Star on GitHub
         </a>
       </footer>
     </div>
@@ -141,7 +150,8 @@ const timeSavings = [
     flex-shrink: 0;
   }
 
-  .billing-toggle-container {
+  .billing-toggle-container,
+  .spend-toggle-container {
     flex-shrink: 0;
   }
 
@@ -180,7 +190,8 @@ const timeSavings = [
     outline: none;
   }
 
-  .billing-toggle {
+  .billing-toggle,
+  .spend-toggle {
     display: flex;
     gap: 0;
   }
@@ -375,8 +386,6 @@ const timeSavings = [
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    margin-top: 3rem;
-    padding-top: 2rem;
   }
 
   .footer-link {
@@ -399,11 +408,6 @@ const timeSavings = [
     background: rgb(var(--bg-grey));
   }
 
-  .github-link:hover {
-    border-color: rgb(var(--accent-blue));
-    color: rgb(var(--accent-blue));
-  }
-
   .footer-icon {
     width: 1rem;
     height: 1rem;
@@ -418,7 +422,8 @@ const timeSavings = [
     }
 
     .salary-input-container,
-    .billing-toggle-container {
+    .billing-toggle-container,
+    .spend-toggle-container {
       text-align: center;
     }
 
@@ -426,11 +431,13 @@ const timeSavings = [
       justify-content: center;
     }
 
-    .billing-toggle {
+    .billing-toggle,
+    .spend-toggle {
       justify-content: stretch;
     }
 
-    .billing-toggle button {
+    .billing-toggle button,
+    .spend-toggle button {
       flex: 1;
     }
 
@@ -477,9 +484,11 @@ const timeSavings = [
 
   const salaryInput = document.getElementById('salary') as HTMLInputElement;
   const valueCells = document.querySelectorAll<HTMLTableCellElement>('.value-cell');
-  const toggleBtns = document.querySelectorAll<HTMLButtonElement>('.toggle-btn');
+  const periodToggleBtns = document.querySelectorAll<HTMLButtonElement>('.billing-toggle .toggle-btn');
+  const spendToggleBtns = document.querySelectorAll<HTMLButtonElement>('.spend-toggle .toggle-btn');
 
   let billingPeriod: 'annual' | 'monthly' = 'monthly';
+  let spendMode: 'money' | 'time' = 'money';
 
   function parseSalary(value: string): number {
     return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
@@ -504,6 +513,85 @@ const timeSavings = [
     return '$0';
   }
 
+  /**
+   * Format seconds as human-readable time duration with aggressive rounding.
+   * This is a simple flat calculation - future versions may incorporate
+   * productivity multipliers, future discounting, or flow-change probabilities.
+   */
+  function formatTime(totalSeconds: number): string {
+    if (totalSeconds < 1) {
+      return '<1s';
+    }
+
+    const SECONDS_PER_MINUTE = 60;
+    const SECONDS_PER_HOUR = 3600;
+    const SECONDS_PER_DAY = 28800; // 8-hour work days
+    const SECONDS_PER_WEEK = SECONDS_PER_DAY * 5;
+    const SECONDS_PER_YEAR = SECONDS_PER_DAY * 250;
+
+    // Years (250 work days)
+    if (totalSeconds >= SECONDS_PER_YEAR * 0.75) {
+      const years = Math.round(totalSeconds / SECONDS_PER_YEAR);
+      return `${years}y`;
+    }
+
+    // Weeks (round to nearest week when >= 4 days)
+    if (totalSeconds >= SECONDS_PER_DAY * 4) {
+      const weeks = Math.round(totalSeconds / SECONDS_PER_WEEK);
+      return `${weeks}w`;
+    }
+
+    // Days (round to nearest day when >= 1.5 days)
+    if (totalSeconds >= SECONDS_PER_DAY * 1.5) {
+      const days = Math.round(totalSeconds / SECONDS_PER_DAY);
+      return `${days}d`;
+    }
+
+    // 1 day threshold
+    if (totalSeconds >= SECONDS_PER_DAY * 0.75) {
+      return '1d';
+    }
+
+    // Hours (round to nearest hour when >= 2 hours)
+    if (totalSeconds >= SECONDS_PER_HOUR * 2) {
+      const hours = Math.round(totalSeconds / SECONDS_PER_HOUR);
+      return `${hours}h`;
+    }
+
+    // 1 hour threshold
+    if (totalSeconds >= SECONDS_PER_HOUR * 0.75) {
+      return '1h';
+    }
+
+    // Minutes (round to nearest minute when >= 2 minutes)
+    if (totalSeconds >= SECONDS_PER_MINUTE * 2) {
+      const minutes = Math.round(totalSeconds / SECONDS_PER_MINUTE);
+      return `${minutes}m`;
+    }
+
+    // 1 minute threshold
+    if (totalSeconds >= SECONDS_PER_MINUTE * 0.75) {
+      return '1m';
+    }
+
+    // Seconds
+    return `${Math.round(totalSeconds)}s`;
+  }
+
+  /**
+   * Calculate the effective time saved based on raw time savings.
+   * Currently returns flat time saved, but designed to be replaced with
+   * more sophisticated calculations including:
+   * - Future discounting (probability that workflow changes)
+   * - Productivity gain multipliers (compounding benefits)
+   * - Context-switching cost savings
+   */
+  function calculateEffectiveTimeSaved(rawSecondsPerYear: number): number {
+    // TODO: Future enhancement - add productivity multipliers and discounting
+    // For now, return raw time saved
+    return rawSecondsPerYear;
+  }
+
   function formatSalaryInput(value: string): string {
     const num = parseSalary(value);
     if (num === 0) return '';
@@ -513,9 +601,9 @@ const timeSavings = [
   function getOpacity(value: number, salary: number): number {
     // Fade high values
     const HIGH_FADE_START = salary * 0.05;
-    const HIGH_FADE_END = salary;
+    const HIGH_FADE_END = salary * 2.00;
     const highRaw = 1 - (Math.log(value) - Math.log(HIGH_FADE_START)) / (Math.log(HIGH_FADE_END) - Math.log(HIGH_FADE_START));
-    const highOpacity = Math.min(1, Math.max(0.2, highRaw));
+    const highOpacity = Math.min(1, Math.max(0.1, highRaw));
 
     // Fade low values (below $1, fading to min at $0.01)
     const LOW_FADE_START = 5;
@@ -527,6 +615,34 @@ const timeSavings = [
     }
 
     return Math.min(highOpacity, lowOpacity);
+  }
+
+  function getTimeOpacity(seconds: number): number {
+    const SECONDS_PER_DAY = 28800;
+    const SECONDS_PER_WEEK = SECONDS_PER_DAY * 5;
+    const SECONDS_PER_YEAR = SECONDS_PER_DAY * 250;
+
+    // Fade low values (under 1 minute)
+    const LOW_FADE_START = 60; // 1 minute
+    const LOW_FADE_END = 1;    // 1 second
+    let lowOpacity = 1;
+    if (seconds < LOW_FADE_START) {
+      const lowRaw = (seconds - LOW_FADE_END) / (LOW_FADE_START - LOW_FADE_END);
+      lowOpacity = Math.min(1, Math.max(0.25, lowRaw));
+    }
+
+    // Fade high values (unrealistic time savings)
+    // Start fading at 1 month (4 weeks), fully faded at 1 year
+    const HIGH_FADE_START = SECONDS_PER_WEEK * 4;  // ~1 month
+    const HIGH_FADE_END = SECONDS_PER_YEAR;        // 1 year
+    let highOpacity = 1;
+    if (seconds > HIGH_FADE_START) {
+      const highRaw = 1 - (Math.log(seconds) - Math.log(HIGH_FADE_START)) /
+                          (Math.log(HIGH_FADE_END) - Math.log(HIGH_FADE_START));
+      highOpacity = Math.min(1, Math.max(0.15, highRaw));
+    }
+
+    return Math.min(lowOpacity, highOpacity);
   }
 
   function getTier(value: number, salary: number): string {
@@ -542,32 +658,64 @@ const timeSavings = [
   function updateTable() {
     const salary = parseSalary(salaryInput.value);
     const hourlyRate = salary / WORK_HOURS_PER_YEAR;
-    const divisor = billingPeriod === 'monthly' ? 12 : 1;
+    const periodDivisor = billingPeriod === 'monthly' ? 12 : 1;
 
     valueCells.forEach(cell => {
       const freqMultiplier = parseInt(cell.dataset.freqMultiplier || '0', 10);
       const timeSeconds = parseInt(cell.dataset.timeSeconds || '0', 10);
 
-      // Total time saved in hours per year
-      const totalHoursPerYear = (freqMultiplier * timeSeconds) / 3600;
+      // Total time saved per year (in seconds)
+      const rawSecondsPerYear = freqMultiplier * timeSeconds;
+      const effectiveSecondsPerYear = calculateEffectiveTimeSaved(rawSecondsPerYear);
+
+      // Total time saved in hours per year (for money calculation)
+      const totalHoursPerYear = effectiveSecondsPerYear / 3600;
 
       // Value of time saved (annual)
       const annualValue = hourlyRate * totalHoursPerYear;
 
-      // Display value (divided for monthly)
-      const displayValue = annualValue / divisor;
+      // Display time saved (divided for monthly if applicable)
+      const displaySeconds = effectiveSecondsPerYear / periodDivisor;
+
+      // Display money value (divided for monthly)
+      const displayMoney = annualValue / periodDivisor;
 
       const valueSpan = cell.querySelector('.value') as HTMLElement;
       if (valueSpan) {
-        valueSpan.textContent = salary > 0 ? formatCurrency(displayValue) : '—';
-        // Use annual value for opacity/tier to keep consistent visual hierarchy
-        valueSpan.style.opacity = salary > 0 ? String(getOpacity(annualValue, salary)) : '1';
+        if (spendMode === 'money') {
+          valueSpan.textContent = salary > 0 ? formatCurrency(displayMoney) : '—';
+          // Use annual value for opacity/tier to keep consistent visual hierarchy
+          valueSpan.style.opacity = salary > 0 ? String(getOpacity(annualValue, salary)) : '1';
+        } else {
+          // Time mode - show time saved
+          valueSpan.textContent = formatTime(displaySeconds);
+          // For time mode, fade both very small and ludicrously large values
+          valueSpan.style.opacity = String(getTimeOpacity(displaySeconds));
+        }
       }
 
-      // Update tier class for color coding (based on annual value for consistency)
+      // Update tier class for color coding
       cell.classList.remove('tier-1', 'tier-2', 'tier-3', 'tier-4', 'tier-5');
-      if (salary > 0 && annualValue > 0) {
+      if (spendMode === 'money' && salary > 0 && annualValue > 0) {
         cell.classList.add(getTier(annualValue, salary));
+      } else if (spendMode === 'time') {
+        // Time-based tiers by displayed unit (matching formatTime thresholds)
+        // s=grey, m=green, h=blue, d=purple, w/y=red
+        const SECONDS_PER_MINUTE = 60;
+        const SECONDS_PER_HOUR = 3600;
+        const SECONDS_PER_DAY = 28800;
+
+        if (displaySeconds < SECONDS_PER_MINUTE * 0.75) {
+          cell.classList.add('tier-1'); // seconds - grey
+        } else if (displaySeconds < SECONDS_PER_HOUR * 0.75) {
+          cell.classList.add('tier-2'); // minutes - green
+        } else if (displaySeconds < SECONDS_PER_DAY * 0.75) {
+          cell.classList.add('tier-3'); // hours - blue
+        } else if (displaySeconds < SECONDS_PER_DAY * 4) {
+          cell.classList.add('tier-4'); // days - purple
+        } else {
+          cell.classList.add('tier-5'); // weeks/years - red
+        }
       }
     });
   }
@@ -591,8 +739,8 @@ const timeSavings = [
     salaryInput.select();
   });
 
-  // Toggle button handlers
-  toggleBtns.forEach(btn => {
+  // Period toggle button handlers
+  periodToggleBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const period = btn.dataset.period as 'annual' | 'monthly';
       if (period === billingPeriod) return;
@@ -600,7 +748,23 @@ const timeSavings = [
       billingPeriod = period;
 
       // Update active state
-      toggleBtns.forEach(b => b.classList.remove('active'));
+      periodToggleBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      updateTable();
+    });
+  });
+
+  // Spend mode toggle button handlers
+  spendToggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.spend as 'money' | 'time';
+      if (mode === spendMode) return;
+
+      spendMode = mode;
+
+      // Update active state
+      spendToggleBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
       updateTable();

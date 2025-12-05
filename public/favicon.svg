@@ -1,27 +1,24 @@
-<svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_165_538)">
-<rect width="68" height="68" rx="12" fill="white"/>
-<rect x="6" y="6" width="56" height="56" rx="8" stroke="black" stroke-width="4"/>
-<rect x="16" y="62" width="6" height="6" rx="1" fill="black"/>
-<rect x="46" y="62" width="6" height="6" rx="1" fill="black"/>
-<rect x="3" y="17" width="6" height="6" rx="1" fill="black"/>
-<rect x="3" y="31" width="6" height="6" rx="1" fill="black"/>
-<rect x="3" y="45" width="6" height="6" rx="1" fill="black"/>
-<path d="M34 18L34 25" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<path d="M22.5 22.5L27.4497 27.4497" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<path d="M34 43L34 50" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<path d="M43 34H50" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<path d="M22.5 45.5L27.4497 40.5503" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<path d="M45.5 22.5L40.5503 27.4497" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<path d="M45.5 45.5L40.5503 40.5503" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<path d="M18 34H25" stroke="black" stroke-width="4" stroke-linecap="round"/>
-<circle cx="34" cy="34" r="11" fill="black"/>
-<path d="M32.5 38C32.5 38.8284 33.1716 39.5 34 39.5C34.8284 39.5 35.5 38.8284 35.5 38L32.5 38ZM34 32L32.5 32L32.5 38L34 38L35.5 38L35.5 32L34 32Z" fill="white"/>
-<circle cx="34" cy="31" r="3" fill="white"/>
-</g>
-<defs>
-<clipPath id="clip0_165_538">
-<rect width="68" height="68" fill="white"/>
-</clipPath>
-</defs>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- xkcd-style calendar day 1 favicon -->
+
+  <!-- Calendar body - wobbly rectangle -->
+  <path d="M8 16 Q7 16 7 17 L6 54 Q6 57 9 57 L55 56 Q58 56 58 53 L57 17 Q57 15 55 15 L9 16 Z"
+        fill="white" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Calendar header bar - wobbly -->
+  <path d="M7 16 Q6 15 7 14 L8 10 Q9 8 11 8 L53 7 Q56 7 56 10 L57 15 Q57 16 56 16"
+        fill="black" stroke="black" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Binding rings - hand drawn circles -->
+  <ellipse cx="18" cy="8" rx="3.5" ry="4" fill="none" stroke="black" stroke-width="2.5"/>
+  <ellipse cx="32" cy="7" rx="3.5" ry="4" fill="none" stroke="black" stroke-width="2.5"/>
+  <ellipse cx="46" cy="8" rx="3.5" ry="4" fill="none" stroke="black" stroke-width="2.5"/>
+
+  <!-- Number "1" - simple wobbly xkcd style -->
+  <!-- Serif/flag at top -->
+  <path d="M24 26 Q26 24 28 25 L32 23" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Main stem -->
+  <path d="M31 24 Q32 35 31 48 Q31 50 32 51" stroke="black" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  <!-- Bottom serif -->
+  <path d="M24 50 Q28 51 32 50 Q36 51 40 50" stroke="black" stroke-width="3" stroke-linecap="round" fill="none"/>
 </svg>
