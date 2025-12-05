@@ -1,7 +1,9 @@
 {
-  "name": "time-saver",
+  "name": "isitworththetime",
   "type": "module",
   "version": "1.0.0",
+  "author": "Liam Gray <@hoxxep>",
+  "repository": "https://github.com/hoxxep/isitworththetime",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

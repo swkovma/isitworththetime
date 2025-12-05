@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 
 // Columns: frequency (how often you do the task)
+// Multipliers based on 250 working days per year (Mon-Fri with 2 weeks holiday)
 const frequencies = [
   { label: '50/day', multiplier: 50 * 250 },
   { label: '5/day', multiplier: 5 * 250 },
@@ -17,11 +18,11 @@ const timeSavings = [
   { label: '5 seconds', seconds: 5 },
   { label: '30 seconds', seconds: 30 },
   { label: '1 minute', seconds: 60 },
-  { label: '5 minutes', seconds: 300 },
-  { label: '30 minutes', seconds: 1800 },
-  { label: '1 hour', seconds: 3600 },
-  { label: '6 hours', seconds: 21600 },
-  { label: '1 day', seconds: 28800 },
+  { label: '5 minutes', seconds: 5 * 60 },
+  { label: '30 minutes', seconds: 30 * 60 },
+  { label: '1 hour', seconds: 60 * 60 },
+  { label: '6 hours', seconds: 6 * 60 * 60 },
+  { label: '1 day', seconds: 24 * 60 * 60 },
 ];
 ---
 
@@ -483,7 +484,8 @@ const timeSavings = [
 </style>
 
 <script>
-  const WORK_HOURS_PER_YEAR = 2000;
+  // 8 hours per day * 250 work days per year
+  const WORK_HOURS_PER_YEAR = 8 * 250;
 
   const salaryInput = document.getElementById('salary') as HTMLInputElement;
   const valueCells = document.querySelectorAll<HTMLTableCellElement>('.value-cell');
@@ -520,15 +522,19 @@ const timeSavings = [
    * Format seconds as human-readable time duration with aggressive rounding.
    * This is a simple flat calculation - future versions may incorporate
    * productivity multipliers, future discounting, or flow-change probabilities.
+   *
+   * We assume an 8-hour workday and 250 workdays per year, so saving 21 hours over the course of
+   * a year would round to "3d" (3 days).
    */
   function formatTime(totalSeconds: number): string {
     if (totalSeconds < 1) {
       return '<1s';
     }
 
+    // Careful to use 250 work days, 8 hours per day
     const SECONDS_PER_MINUTE = 60;
-    const SECONDS_PER_HOUR = 3600;
-    const SECONDS_PER_DAY = 28800; // 8-hour work days
+    const SECONDS_PER_HOUR = 60 * 60;
+    const SECONDS_PER_DAY = 8 * 60 * 60;  // 8 hours per day
     const SECONDS_PER_WEEK = SECONDS_PER_DAY * 5;
     const SECONDS_PER_YEAR = SECONDS_PER_DAY * 250;
 
@@ -583,15 +589,17 @@ const timeSavings = [
 
   /**
    * Calculate the effective time saved based on raw time savings.
-   * Currently returns flat time saved, but designed to be replaced with
-   * more sophisticated calculations including:
+   *
+   * This currently returns a flat time saved, but is designed to be replaced with a more
+   * sophisticated calculation, such as:
    * - Future discounting (probability that workflow changes)
    * - Productivity gain multipliers (compounding benefits)
    * - Context-switching cost savings
+   *
+   * Flat-rate break even over 1 year might be the best fits-all-use-cases model, so we're
+   * happy with this for now.
    */
   function calculateEffectiveTimeSaved(rawSecondsPerYear: number): number {
-    // TODO: Future enhancement - add productivity multipliers and discounting
-    // For now, return raw time saved
     return rawSecondsPerYear;
   }
 
