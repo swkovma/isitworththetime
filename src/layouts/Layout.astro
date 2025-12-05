@@ -40,5 +40,8 @@ const canonicalUrl = siteUrl ? new URL(currentPath, siteUrl).toString() : undefi
 </head>
 <body>
 <slot />
+
+<!-- 100% privacy-first analytics -->
+<script async is:inline src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 </body>
 </html>
