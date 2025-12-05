@@ -21,8 +21,8 @@ const timeSavings = [
   { label: '5 minutes', seconds: 5 * 60 },
   { label: '30 minutes', seconds: 30 * 60 },
   { label: '1 hour', seconds: 60 * 60 },
-  { label: '6 hours', seconds: 6 * 60 * 60 },
-  { label: '1 day', seconds: 24 * 60 * 60 },
+  { label: '4 hours', seconds: 4 * 60 * 60 },
+  { label: '1 day', seconds: 8 * 60 * 60 },  // assuming 8 working hours in a day
 ];
 ---
 
@@ -524,7 +524,7 @@ const timeSavings = [
     time5min: string;
     time30min: string;
     time1hour: string;
-    time6hours: string;
+    time4hours: string;
     time1day: string;
   }
 
@@ -559,7 +559,7 @@ const timeSavings = [
       time5min: '5 minutes',
       time30min: '30 minutes',
       time1hour: '1 hour',
-      time6hours: '6 hours',
+      time4hours: '4 hours',
       time1day: '1 day',
     },
     es: {
@@ -592,7 +592,7 @@ const timeSavings = [
       time5min: '5 minutos',
       time30min: '30 minutos',
       time1hour: '1 hora',
-      time6hours: '6 horas',
+      time4hours: '4 horas',
       time1day: '1 día',
     },
     fr: {
@@ -625,7 +625,7 @@ const timeSavings = [
       time5min: '5 minutes',
       time30min: '30 minutes',
       time1hour: '1 heure',
-      time6hours: '6 heures',
+      time4hours: '4 heures',
       time1day: '1 jour',
     },
     de: {
@@ -658,7 +658,7 @@ const timeSavings = [
       time5min: '5 Minuten',
       time30min: '30 Minuten',
       time1hour: '1 Stunde',
-      time6hours: '6 Stunden',
+      time4hours: '4 Stunden',
       time1day: '1 Tag',
     },
     pt: {
@@ -691,7 +691,7 @@ const timeSavings = [
       time5min: '5 minutos',
       time30min: '30 minutos',
       time1hour: '1 hora',
-      time6hours: '6 horas',
+      time4hours: '4 horas',
       time1day: '1 dia',
     },
     zh: {
@@ -724,7 +724,7 @@ const timeSavings = [
       time5min: '5分钟',
       time30min: '30分钟',
       time1hour: '1小时',
-      time6hours: '6小时',
+      time4hours: '4小时',
       time1day: '1天',
     },
     ja: {
@@ -757,7 +757,7 @@ const timeSavings = [
       time5min: '5分',
       time30min: '30分',
       time1hour: '1時間',
-      time6hours: '6時間',
+      time4hours: '4時間',
       time1day: '1日',
     },
     it: {
@@ -790,7 +790,7 @@ const timeSavings = [
       time5min: '5 minuti',
       time30min: '30 minuti',
       time1hour: '1 ora',
-      time6hours: '6 ore',
+      time4hours: '4 ore',
       time1day: '1 giorno',
     },
     nl: {
@@ -823,7 +823,7 @@ const timeSavings = [
       time5min: '5 minuten',
       time30min: '30 minuten',
       time1hour: '1 uur',
-      time6hours: '6 uur',
+      time4hours: '4 uur',
       time1day: '1 dag',
     },
     ru: {
@@ -856,7 +856,7 @@ const timeSavings = [
       time5min: '5 минут',
       time30min: '30 минут',
       time1hour: '1 час',
-      time6hours: '6 часов',
+      time4hours: '4 часа',
       time1day: '1 день',
     },
   };
@@ -931,7 +931,7 @@ const timeSavings = [
 
   // Frequency and time label keys for translation
   const freqKeys = ['freq50day', 'freq5day', 'freqDaily', 'freqWeekly', 'freqMonthly', 'freqYearly'] as const;
-  const timeKeys = ['time1sec', 'time5sec', 'time30sec', 'time1min', 'time5min', 'time30min', 'time1hour', 'time6hours', 'time1day'] as const;
+  const timeKeys = ['time1sec', 'time5sec', 'time30sec', 'time1min', 'time5min', 'time30min', 'time1hour', 'time4hours', 'time1day'] as const;
 
   // Update subtitle based on spend mode
   function updateSubtitle(mode: 'money' | 'time') {
