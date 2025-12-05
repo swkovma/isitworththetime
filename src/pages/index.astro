@@ -33,8 +33,8 @@ const timeSavings = [
         <h1 class="text-4xl lg:text-5xl font-semibold text-slate-800 dark:text-slate-100 mb-2" data-i18n="title">
           Is it worth the time?
         </h1>
-        <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto" data-i18n="subtitle">
-          Showing you how much to spend on something that saves you time
+        <p class="text-lg text-slate-600 dark:text-slate-300 mx-auto" id="subtitle">
+          How much money you can spend automating a task before you're spending more than you save
         </p>
       </header>
 
@@ -269,20 +269,21 @@ const timeSavings = [
   .corner-cell .time-label {
     position: absolute;
     font-size: 0.7rem;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: rgb(var(--accent-grey));
   }
 
   .corner-cell .time-label {
     bottom: 8px;
     left: 8px;
+    color: rgb(var(--accent-grey));
   }
 
   .corner-cell .freq-label {
     top: 8px;
     right: 8px;
+    color: rgb(var(--accent-blue));
   }
 
   .freq-header {
@@ -447,7 +448,7 @@ const timeSavings = [
     }
 
     .table-container {
-      padding: 1rem;
+      padding: 0.5rem;
       border-radius: 12px;
     }
 
@@ -493,7 +494,8 @@ const timeSavings = [
 
   interface Translations {
     title: string;
-    subtitle: string;
+    subtitleMoney: string;
+    subtitleTime: string;
     annualSalary: string;
     payPer: string;
     month: string;
@@ -529,7 +531,8 @@ const timeSavings = [
   const translations: Record<string, Translations> = {
     en: {
       title: 'Is it worth the time?',
-      subtitle: 'Showing you how much to spend on something that saves you time',
+      subtitleMoney: 'How much money you can spend automating a task before you\'re spending more than you save',
+      subtitleTime: 'How much time you can spend automating a task before you\'re spending more than you save',
       annualSalary: 'Annual Salary',
       payPer: 'Pay Per',
       month: 'Month',
@@ -561,7 +564,8 @@ const timeSavings = [
     },
     es: {
       title: '¿Vale la pena el tiempo?',
-      subtitle: 'Mostrándote cuánto gastar en algo que te ahorra tiempo',
+      subtitleMoney: 'Cuánto dinero puedes gastar automatizando una tarea antes de gastar más de lo que ahorras',
+      subtitleTime: 'Cuánto tiempo puedes dedicar a automatizar una tarea antes de gastar más de lo que ahorras',
       annualSalary: 'Salario Anual',
       payPer: 'Pago Por',
       month: 'Mes',
@@ -593,7 +597,8 @@ const timeSavings = [
     },
     fr: {
       title: 'Est-ce que ça vaut le temps?',
-      subtitle: 'Vous montrant combien dépenser pour quelque chose qui vous fait gagner du temps',
+      subtitleMoney: 'Combien d\'argent vous pouvez dépenser pour automatiser une tâche avant de dépenser plus que vous n\'économisez',
+      subtitleTime: 'Combien de temps vous pouvez consacrer à automatiser une tâche avant de dépenser plus que vous n\'économisez',
       annualSalary: 'Salaire Annuel',
       payPer: 'Payer Par',
       month: 'Mois',
@@ -625,7 +630,8 @@ const timeSavings = [
     },
     de: {
       title: 'Lohnt sich die Zeit?',
-      subtitle: 'Zeigt dir, wie viel du für etwas ausgeben solltest, das dir Zeit spart',
+      subtitleMoney: 'Wie viel Geld du für die Automatisierung einer Aufgabe ausgeben kannst, bevor du mehr ausgibst als du sparst',
+      subtitleTime: 'Wie viel Zeit du für die Automatisierung einer Aufgabe aufwenden kannst, bevor du mehr ausgibst als du sparst',
       annualSalary: 'Jahresgehalt',
       payPer: 'Zahlung Pro',
       month: 'Monat',
@@ -657,7 +663,8 @@ const timeSavings = [
     },
     pt: {
       title: 'Vale a pena o tempo?',
-      subtitle: 'Mostrando quanto gastar em algo que economiza seu tempo',
+      subtitleMoney: 'Quanto dinheiro você pode gastar automatizando uma tarefa antes de gastar mais do que economiza',
+      subtitleTime: 'Quanto tempo você pode gastar automatizando uma tarefa antes de gastar mais do que economiza',
       annualSalary: 'Salário Anual',
       payPer: 'Pagar Por',
       month: 'Mês',
@@ -689,7 +696,8 @@ const timeSavings = [
     },
     zh: {
       title: '值得花时间吗？',
-      subtitle: '告诉你应该花多少钱购买节省时间的工具',
+      subtitleMoney: '在自动化任务上可以花多少钱，才不会花费超过节省的成本',
+      subtitleTime: '在自动化任务上可以花多少时间，才不会花费超过节省的成本',
       annualSalary: '年薪',
       payPer: '支付周期',
       month: '月',
@@ -721,7 +729,8 @@ const timeSavings = [
     },
     ja: {
       title: '時間をかける価値はある？',
-      subtitle: '時間を節約するものにいくら使うべきかを表示します',
+      subtitleMoney: 'タスクの自動化に節約以上のコストをかける前に、いくらまでお金を使えるか',
+      subtitleTime: 'タスクの自動化に節約以上のコストをかける前に、どれだけ時間を使えるか',
       annualSalary: '年収',
       payPer: '支払い単位',
       month: '月',
@@ -753,7 +762,8 @@ const timeSavings = [
     },
     it: {
       title: 'Vale la pena il tempo?',
-      subtitle: 'Ti mostra quanto spendere per qualcosa che ti fa risparmiare tempo',
+      subtitleMoney: 'Quanto denaro puoi spendere per automatizzare un\'attività prima di spendere più di quanto risparmi',
+      subtitleTime: 'Quanto tempo puoi dedicare ad automatizzare un\'attività prima di spendere più di quanto risparmi',
       annualSalary: 'Stipendio Annuale',
       payPer: 'Pagamento Per',
       month: 'Mese',
@@ -785,7 +795,8 @@ const timeSavings = [
     },
     nl: {
       title: 'Is het de tijd waard?',
-      subtitle: 'Toont hoeveel je kunt uitgeven aan iets dat je tijd bespaart',
+      subtitleMoney: 'Hoeveel geld je kunt uitgeven aan het automatiseren van een taak voordat je meer uitgeeft dan je bespaart',
+      subtitleTime: 'Hoeveel tijd je kunt besteden aan het automatiseren van een taak voordat je meer uitgeeft dan je bespaart',
       annualSalary: 'Jaarsalaris',
       payPer: 'Betaling Per',
       month: 'Maand',
@@ -817,7 +828,8 @@ const timeSavings = [
     },
     ru: {
       title: 'Стоит ли это времени?',
-      subtitle: 'Показывает, сколько можно потратить на то, что экономит ваше время',
+      subtitleMoney: 'Сколько денег можно потратить на автоматизацию задачи, прежде чем затраты превысят экономию',
+      subtitleTime: 'Сколько времени можно потратить на автоматизацию задачи, прежде чем затраты превысят экономию',
       annualSalary: 'Годовая зарплата',
       payPer: 'Оплата за',
       month: 'Месяц',
@@ -921,8 +933,16 @@ const timeSavings = [
   const freqKeys = ['freq50day', 'freq5day', 'freqDaily', 'freqWeekly', 'freqMonthly', 'freqYearly'] as const;
   const timeKeys = ['time1sec', 'time5sec', 'time30sec', 'time1min', 'time5min', 'time30min', 'time1hour', 'time6hours', 'time1day'] as const;
 
+  // Update subtitle based on spend mode
+  function updateSubtitle(mode: 'money' | 'time') {
+    const subtitleEl = document.getElementById('subtitle');
+    if (subtitleEl) {
+      subtitleEl.textContent = mode === 'money' ? t.subtitleMoney : t.subtitleTime;
+    }
+  }
+
   // Apply translations to the page
-  function applyTranslations() {
+  function applyTranslations(currentSpendMode: 'money' | 'time') {
     // Update elements with data-i18n attribute
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n') as keyof Translations;
@@ -936,6 +956,9 @@ const timeSavings = [
     if (currencyEl) {
       currencyEl.textContent = currencySymbol;
     }
+
+    // Update subtitle based on current spend mode
+    updateSubtitle(currentSpendMode);
 
     // Update frequency headers
     document.querySelectorAll<HTMLTableCellElement>('.freq-header').forEach(el => {
@@ -1245,6 +1268,9 @@ const timeSavings = [
       spendToggleBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
+      // Update subtitle based on mode
+      updateSubtitle(mode);
+
       updateTable();
     });
   });
@@ -1277,6 +1303,6 @@ const timeSavings = [
   });
 
   // Apply translations and initial calculation
-  applyTranslations();
+  applyTranslations(spendMode);
   updateTable();
 </script>
