@@ -30,7 +30,7 @@ const timeSavings = [
   <main class="min-h-screen">
     <div class="site-section">
       <header class="text-center mb-12">
-        <h1 class="text-4xl lg:text-5xl font-semibold text-slate-800 dark:text-slate-100 mb-2" data-i18n="title">
+        <h1 class="text-4xl lg:text-5xl font-semibold text-slate-800 dark:text-slate-100 mb-1 sm:mb-2" data-i18n="title">
           Is it worth the time?
         </h1>
         <p class="text-lg leading-tight text-slate-600 dark:text-slate-300 mx-auto" id="subtitle">
@@ -40,7 +40,7 @@ const timeSavings = [
 
       <div class="table-controls">
         <div class="salary-input-container">
-          <label for="salary" class="block text-slate-700 dark:text-slate-300 font-medium mb-2" data-i18n="annualSalary">
+          <label for="salary" class="block text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="annualSalary">
             Annual Salary
           </label>
           <div class="salary-input-wrapper">
@@ -57,7 +57,7 @@ const timeSavings = [
         </div>
 
         <div class="billing-toggle-container">
-          <label class="block text-slate-700 dark:text-slate-300 font-medium mb-2" data-i18n="payPer">Pay Per</label>
+          <label class="block text-slate-700 dark:text-slate-300 font-medium  mb-1 sm:mb-2" data-i18n="payPer">Pay Per</label>
           <div class="billing-toggle">
             <button type="button" class="toggle-btn active" data-period="monthly" data-i18n="month">Month</button>
             <button type="button" class="toggle-btn" data-period="annual" data-i18n="year">Year</button>
@@ -65,7 +65,7 @@ const timeSavings = [
         </div>
 
         <div class="spend-toggle-container">
-          <label class="block text-slate-700 dark:text-slate-300 font-medium mb-2" data-i18n="spend">Spend</label>
+          <label class="block text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="spend">Spend</label>
           <div class="spend-toggle">
             <button type="button" class="toggle-btn active" data-spend="money" data-i18n="money">Money</button>
             <button type="button" class="toggle-btn" data-spend="time" data-i18n="time">Time</button>
@@ -261,8 +261,9 @@ const timeSavings = [
   .corner-cell {
     position: relative;
     background: linear-gradient(25deg, rgb(var(--bg-grey)) 0%, rgb(var(--bg-blue-light)) 100%);
-    min-width: 100px;
+    min-width: 95px;
     min-height: 40px;
+    overflow: hidden;
   }
 
   .corner-cell .freq-label,
@@ -271,7 +272,9 @@ const timeSavings = [
     font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 
   .corner-cell .time-label {
@@ -434,6 +437,14 @@ const timeSavings = [
 
     .salary-input-container .flex {
       justify-content: center;
+    }
+
+    .salary-input {
+      padding: 0.3rem 0.75rem 0.3rem 0.25rem;
+    }
+
+    .toggle-btn {
+      padding: 0.3rem 1.25rem;
     }
 
     .billing-toggle,
