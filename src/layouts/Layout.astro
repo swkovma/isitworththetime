@@ -22,12 +22,19 @@ const canonicalUrl = siteUrl ? new URL(currentPath, siteUrl).toString() : undefi
     <meta charset="UTF-8" />
     <title>{title}</title>
     {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-
     <meta name="description" content={description} />
 
     <meta name="og:title" content={title} />
     <meta name="og:description" content={description} />
+    {canonicalUrl && <meta name="og:url" content={canonicalUrl} />}
+    <meta name="og:site_name" content="Is it worth the time?" />
+    <meta name="og:image" content={siteUrl + 'og-image.png'} />
     <meta name="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={title}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={siteUrl + 'og-image.png'}>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -41,7 +48,7 @@ const canonicalUrl = siteUrl ? new URL(currentPath, siteUrl).toString() : undefi
 <body>
 <slot />
 
-<!-- 100% privacy-first analytics -->
+<!-- privacy-first analytics -->
 <script async is:inline src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 </body>
 </html>

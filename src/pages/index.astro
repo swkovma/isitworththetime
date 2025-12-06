@@ -990,19 +990,25 @@ const timeSavings = [
   }
 
   function formatCurrency(value: number): string {
-    if (value >= 1000000) {
-      return currencySymbol + (value / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (value >= 1_000_000_000) {
+      return currencySymbol + Math.round(value / 1_000_000_000) + 'B';
     }
-    if (value >= 10000) {
+    if (value >= 10_000_000) {
+      return currencySymbol + Math.round(value / 1_000_000) + 'M';
+    }
+    if (value >= 1_000_000) {
+      return currencySymbol + (value / 1_000_000).toFixed(0).replace(/\.0$/, '') + 'M';
+    }
+    if (value >= 10_000) {
       return currencySymbol + Math.round(value / 1000) + 'k';
     }
-    if (value >= 1000) {
+    if (value >= 1_000) {
       return currencySymbol + (value / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
     }
     if (value >= 1) {
       return currencySymbol + Math.round(value);
     }
-    if (value >= 0.01) {
+    if (value >= 0.1) {
       return currencySymbol + value.toFixed(2);
     }
     return currencySymbol + '0';
@@ -1023,10 +1029,10 @@ const timeSavings = [
 
     // Careful to use 250 work days, 8 hours per day
     const SECONDS_PER_MINUTE = 60;
-    const SECONDS_PER_HOUR = 60 * 60;
-    const SECONDS_PER_DAY = 8 * 60 * 60;  // 8 hours per day
-    const SECONDS_PER_WEEK = SECONDS_PER_DAY * 5;
-    const SECONDS_PER_YEAR = SECONDS_PER_DAY * 250;
+    const SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE;
+    const SECONDS_PER_DAY = 8 * SECONDS_PER_HOUR;  // 8 hours per day
+    const SECONDS_PER_WEEK = 5 * SECONDS_PER_DAY;  // 5 working days per week
+    const SECONDS_PER_YEAR = 250 * SECONDS_PER_DAY;  // 250 working days per year
 
     // Years (250 work days)
     if (totalSeconds >= SECONDS_PER_YEAR * 0.75) {
