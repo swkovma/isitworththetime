@@ -107,19 +107,19 @@ h1, h2, h3, h4, h5, h6 {
 
 .site-section {
     margin: 0 auto;
-    padding: 2.5rem 40px;
+    padding: 4rem 40px;
     width: 100%;
     max-width: 1024px;
 }
 
 @media (max-width: 1023px) {
     .site-section {
-        padding: 2rem 24px;
+        padding: 4rem 24px;
     }
 }
 
 @media (max-width: 520px) {
     .site-section {
-        padding: 1rem 12px;
+        padding: 3rem 12px;
     }
 }
