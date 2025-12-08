@@ -1,6 +1,6 @@
 # Is it worth the time?
 
-Compute how much time or money to spend on something that saves you time.
+A quick visualisation for how much to spend on something that saves you time. For example, saving 5 minutes daily works out to be over 1 hour per month, and is worth up to \$87/month on a \$100k salary.
 
 [isitworththetime.com](https://isitworththetime.com) is based on the much loved [xkcd #1205: Is It Worth the Time?](https://xkcd.com/1205/)
 
