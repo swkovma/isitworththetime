@@ -1,29 +1,19 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import { frequencies, timeSavings, getCellDisplay } from '@lib/calculations';
 
-// Columns: frequency (how often you do the task)
-// Multipliers based on 250 working days per year (Mon-Fri with 2 weeks holiday)
-const frequencies = [
-  { label: '50/day', multiplier: 50 * 250 },
-  { label: '5/day', multiplier: 5 * 250 },
-  { label: 'Daily', multiplier: 250 },
-  { label: 'Weekly', multiplier: 50 },
-  { label: 'Monthly', multiplier: 12 },
-  { label: 'Yearly', multiplier: 1 },
-];
+// Pre-calculate table values at build time (default: $100k, monthly, money mode)
+const DEFAULT_SALARY = 100000;
+const DEFAULT_SALARY_STR = '100,000';
+const DEFAULT_PERIOD = 'monthly' as const;
+const DEFAULT_MODE = 'money' as const;
+const DEFAULT_CURRENCY = '$';
 
-// Rows: time saved per occurrence
-const timeSavings = [
-  { label: '1 second', seconds: 1 },
-  { label: '5 seconds', seconds: 5 },
-  { label: '30 seconds', seconds: 30 },
-  { label: '1 minute', seconds: 60 },
-  { label: '5 minutes', seconds: 5 * 60 },
-  { label: '30 minutes', seconds: 30 * 60 },
-  { label: '1 hour', seconds: 60 * 60 },
-  { label: '4 hours', seconds: 4 * 60 * 60 },
-  { label: '1 day', seconds: 8 * 60 * 60 },  // assuming 8 working hours in a day
-];
+const preCalculatedData = timeSavings.map(time =>
+  frequencies.map(freq =>
+    getCellDisplay(DEFAULT_SALARY, freq.multiplier, time.seconds, DEFAULT_PERIOD, DEFAULT_MODE, DEFAULT_CURRENCY)
+  )
+);
 ---
 
 <Layout title="Is It Worth The Time?" description="Calculate how much to spend on time-saving tools based on your salary and the time you'll save.">
@@ -44,14 +34,14 @@ const timeSavings = [
             Annual Salary
           </label>
           <div class="salary-input-wrapper">
-            <span class="salary-prefix" id="currency-symbol">$</span>
+            <span class="salary-prefix" id="currency-symbol">{DEFAULT_CURRENCY}</span>
             <input
               type="text"
               id="salary"
               inputmode="numeric"
-              value="100,000"
+              value={DEFAULT_SALARY_STR}
               class="salary-input"
-              placeholder="100,000"
+              placeholder={DEFAULT_SALARY_STR}
             />
           </div>
         </div>
@@ -91,15 +81,18 @@ const timeSavings = [
               {timeSavings.map((time, rowIndex) => (
                 <tr>
                   <th class="time-header" data-time-index={rowIndex}>{time.label}</th>
-                  {frequencies.map((freq) => (
-                    <td
-                      class="value-cell"
-                      data-freq-multiplier={freq.multiplier}
-                      data-time-seconds={time.seconds}
-                    >
-                      <span class="value">—</span>
-                    </td>
-                  ))}
+                  {frequencies.map((freq, colIndex) => {
+                    const cell = preCalculatedData[rowIndex][colIndex];
+                    return (
+                      <td
+                        class={`value-cell ${cell.tier}`}
+                        data-freq-multiplier={freq.multiplier}
+                        data-time-seconds={time.seconds}
+                      >
+                        <span class="value" style={`opacity: ${cell.opacity}`}>{cell.text}</span>
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -491,8 +484,7 @@ const timeSavings = [
 </style>
 
 <script>
-  // 8 hours per day * 250 work days per year
-  const WORK_HOURS_PER_YEAR = 8 * 250;
+  import { getCellDisplay } from '@lib/calculations';
 
   // ============================================
   // INTERNATIONALIZATION (i18n)
@@ -995,240 +987,31 @@ const timeSavings = [
     return parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
   }
 
-  function formatCurrency(value: number): string {
-    if (value >= 1_000_000_000) {
-      return currencySymbol + Math.round(value / 1_000_000_000) + 'B';
-    }
-    if (value >= 10_000_000) {
-      return currencySymbol + Math.round(value / 1_000_000) + 'M';
-    }
-    if (value >= 1_000_000) {
-      return currencySymbol + (value / 1_000_000).toFixed(0).replace(/\.0$/, '') + 'M';
-    }
-    if (value >= 10_000) {
-      return currencySymbol + Math.round(value / 1000) + 'k';
-    }
-    if (value >= 1_000) {
-      return currencySymbol + (value / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-    }
-    if (value >= 1) {
-      return currencySymbol + Math.round(value);
-    }
-    if (value >= 0.1) {
-      return currencySymbol + value.toFixed(2);
-    }
-    return currencySymbol + '0';
-  }
-
-  /**
-   * Format seconds as human-readable time duration with aggressive rounding.
-   * This is a simple flat calculation - future versions may incorporate
-   * productivity multipliers, future discounting, or flow-change probabilities.
-   *
-   * We assume an 8-hour workday and 250 workdays per year, so saving 21 hours over the course of
-   * a year would round to "3d" (3 days).
-   */
-  function formatTime(totalSeconds: number): string {
-    if (totalSeconds < 1) {
-      return '<1s';
-    }
-
-    // Careful to use 250 work days, 8 hours per day
-    const SECONDS_PER_MINUTE = 60;
-    const SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE;
-    const SECONDS_PER_DAY = 8 * SECONDS_PER_HOUR;  // 8 hours per day
-    const SECONDS_PER_WEEK = 5 * SECONDS_PER_DAY;  // 5 working days per week
-    const SECONDS_PER_YEAR = 250 * SECONDS_PER_DAY;  // 250 working days per year
-
-    // Years (250 work days)
-    if (totalSeconds >= SECONDS_PER_YEAR * 0.75) {
-      const years = Math.round(totalSeconds / SECONDS_PER_YEAR);
-      return `${years}y`;
-    }
-
-    // Weeks (round to nearest week when >= 4 days)
-    if (totalSeconds >= SECONDS_PER_DAY * 4) {
-      const weeks = Math.round(totalSeconds / SECONDS_PER_WEEK);
-      return `${weeks}w`;
-    }
-
-    // Days (round to nearest day when >= 1.5 days)
-    if (totalSeconds >= SECONDS_PER_DAY * 1.5) {
-      const days = Math.round(totalSeconds / SECONDS_PER_DAY);
-      return `${days}d`;
-    }
-
-    // 1 day threshold
-    if (totalSeconds >= SECONDS_PER_DAY * 0.75) {
-      return '1d';
-    }
-
-    // Hours (round to nearest hour when >= 2 hours)
-    if (totalSeconds >= SECONDS_PER_HOUR * 2) {
-      const hours = Math.round(totalSeconds / SECONDS_PER_HOUR);
-      return `${hours}h`;
-    }
-
-    // 1 hour threshold
-    if (totalSeconds >= SECONDS_PER_HOUR * 0.75) {
-      return '1h';
-    }
-
-    // Minutes (round to nearest minute when >= 2 minutes)
-    if (totalSeconds >= SECONDS_PER_MINUTE * 2) {
-      const minutes = Math.round(totalSeconds / SECONDS_PER_MINUTE);
-      return `${minutes}m`;
-    }
-
-    // 1 minute threshold
-    if (totalSeconds >= SECONDS_PER_MINUTE * 0.75) {
-      return '1m';
-    }
-
-    // Seconds
-    return `${Math.round(totalSeconds)}s`;
-  }
-
-  /**
-   * Calculate the effective time saved based on raw time savings.
-   *
-   * This currently returns a flat time saved, but is designed to be replaced with a more
-   * sophisticated calculation, such as:
-   * - Future discounting (probability that workflow changes)
-   * - Productivity gain multipliers (compounding benefits)
-   * - Context-switching cost savings
-   *
-   * Flat-rate break even over 1 year might be the best fits-all-use-cases model, so we're
-   * happy with this for now.
-   */
-  function calculateEffectiveTimeSaved(rawSecondsPerYear: number): number {
-    return rawSecondsPerYear;
-  }
-
   function formatSalaryInput(value: string): string {
     const num = parseSalary(value);
     if (num === 0) return '';
     return num.toLocaleString('en-US');
   }
 
-  function getOpacity(value: number, salary: number): number {
-    // Fade high values
-    const HIGH_FADE_START = salary * 0.05;
-    const HIGH_FADE_END = salary * 2.00;
-    const highRaw = 1 - (Math.log(value) - Math.log(HIGH_FADE_START)) / (Math.log(HIGH_FADE_END) - Math.log(HIGH_FADE_START));
-    const highOpacity = Math.min(1, Math.max(0.2, highRaw));
-
-    // Fade low values (below $1, fading to min at $0.01)
-    const LOW_FADE_START = 5;
-    const LOW_FADE_END = 1;
-    let lowOpacity = 1;
-    if (value < LOW_FADE_START) {
-      const lowRaw = (value - LOW_FADE_END) / (LOW_FADE_START - LOW_FADE_END);
-      lowOpacity = Math.min(1, Math.max(0.2, lowRaw));
-    }
-
-    return Math.min(highOpacity, lowOpacity);
-  }
-
-  function getTimeOpacity(seconds: number): number {
-    const SECONDS_PER_DAY = 28800;
-    const SECONDS_PER_WEEK = SECONDS_PER_DAY * 5;
-    const SECONDS_PER_YEAR = SECONDS_PER_DAY * 250;
-
-    // Fade low values (under 1 minute)
-    const LOW_FADE_START = 60; // 1 minute
-    const LOW_FADE_END = 1;    // 1 second
-    let lowOpacity = 1;
-    if (seconds < LOW_FADE_START) {
-      const lowRaw = (seconds - LOW_FADE_END) / (LOW_FADE_START - LOW_FADE_END);
-      lowOpacity = Math.min(1, Math.max(0.2, lowRaw));
-    }
-
-    // Fade high values (unrealistic time savings)
-    // Start fading at 1 month (4 weeks), fully faded at 1 year
-    const HIGH_FADE_START = SECONDS_PER_WEEK * 4;  // ~1 month
-    const HIGH_FADE_END = SECONDS_PER_YEAR;        // 1 year
-    let highOpacity = 1;
-    if (seconds > HIGH_FADE_START) {
-      const highRaw = 1 - (Math.log(seconds) - Math.log(HIGH_FADE_START)) /
-                          (Math.log(HIGH_FADE_END) - Math.log(HIGH_FADE_START));
-      highOpacity = Math.min(1, Math.max(0.2, highRaw));
-    }
-
-    return Math.min(lowOpacity, highOpacity);
-  }
-
-  function getTier(value: number, salary: number): string {
-    // normalise the tier levels to 100k
-    const ratio = 100000 * (value / salary);
-    if (ratio < 10) return 'tier-1';
-    if (ratio < 100) return 'tier-2';
-    if (ratio < 1000) return 'tier-3';
-    if (ratio < 10000) return 'tier-4';
-    return 'tier-5';
-  }
-
   function updateTable() {
     const salary = parseSalary(salaryInput.value);
-    const hourlyRate = salary / WORK_HOURS_PER_YEAR;
-    const periodDivisor = billingPeriod === 'monthly' ? 12 : 1;
 
     valueCells.forEach(cell => {
       const freqMultiplier = parseInt(cell.dataset.freqMultiplier || '0', 10);
       const timeSeconds = parseInt(cell.dataset.timeSeconds || '0', 10);
 
-      // Total time saved per year (in seconds)
-      const rawSecondsPerYear = freqMultiplier * timeSeconds;
-      const effectiveSecondsPerYear = calculateEffectiveTimeSaved(rawSecondsPerYear);
-
-      // Total time saved in hours per year (for money calculation)
-      const totalHoursPerYear = effectiveSecondsPerYear / 3600;
-
-      // Value of time saved (annual)
-      const annualValue = hourlyRate * totalHoursPerYear;
-
-      // Display time saved (divided for monthly if applicable)
-      const displaySeconds = effectiveSecondsPerYear / periodDivisor;
-
-      // Display money value (divided for monthly)
-      const displayMoney = annualValue / periodDivisor;
+      const display = getCellDisplay(salary, freqMultiplier, timeSeconds, billingPeriod, spendMode, currencySymbol);
 
       const valueSpan = cell.querySelector('.value') as HTMLElement;
       if (valueSpan) {
-        if (spendMode === 'money') {
-          valueSpan.textContent = salary > 0 ? formatCurrency(displayMoney) : '—';
-          // Use annual value for opacity/tier to keep consistent visual hierarchy
-          valueSpan.style.opacity = salary > 0 ? String(getOpacity(annualValue, salary)) : '1';
-        } else {
-          // Time mode - show time saved
-          valueSpan.textContent = formatTime(displaySeconds);
-          // For time mode, fade both very small and ludicrously large values
-          valueSpan.style.opacity = String(getTimeOpacity(displaySeconds));
-        }
+        valueSpan.textContent = display.text;
+        valueSpan.style.opacity = String(display.opacity);
       }
 
       // Update tier class for color coding
       cell.classList.remove('tier-1', 'tier-2', 'tier-3', 'tier-4', 'tier-5');
-      if (spendMode === 'money' && salary > 0 && annualValue > 0) {
-        cell.classList.add(getTier(annualValue, salary));
-      } else if (spendMode === 'time') {
-        // Time-based tiers by displayed unit (matching formatTime thresholds)
-        // s=grey, m=green, h=blue, d=purple, w/y=red
-        const SECONDS_PER_MINUTE = 60;
-        const SECONDS_PER_HOUR = 3600;
-        const SECONDS_PER_DAY = 28800;
-
-        if (displaySeconds < SECONDS_PER_MINUTE * 0.75) {
-          cell.classList.add('tier-1'); // seconds - grey
-        } else if (displaySeconds < SECONDS_PER_HOUR * 0.75) {
-          cell.classList.add('tier-2'); // minutes - green
-        } else if (displaySeconds < SECONDS_PER_DAY * 0.75) {
-          cell.classList.add('tier-3'); // hours - blue
-        } else if (displaySeconds < SECONDS_PER_DAY * 4) {
-          cell.classList.add('tier-4'); // days - purple
-        } else {
-          cell.classList.add('tier-5'); // weeks/years - red
-        }
+      if (display.tier) {
+        cell.classList.add(display.tier);
       }
     });
   }
