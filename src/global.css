@@ -124,3 +124,15 @@ h1, h2, h3, h4, h5, h6 {
         padding: 2rem 12px;
     }
 }
+
+@media (max-width: 380px) {
+    .site-section {
+        padding: 1.5rem 8px;
+    }
+}
+
+@media (max-width: 320px) {
+    .site-section {
+        padding: 1.25rem 4px;
+    }
+}

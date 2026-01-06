@@ -50,18 +50,18 @@ const preCalculatedData = timeSavings.map(time =>
           <button type="button" class="lang-option" data-lang="id"><span class="lang-flag">🇮🇩</span><span>Indonesia</span></button>
         </div>
       </div>
-      <header class="text-center mb-12">
-        <h1 class="text-4xl lg:text-5xl font-semibold text-slate-800 dark:text-slate-100 mb-1 sm:mb-2" data-i18n="title">
+      <header class="text-center mb-6 sm:mb-12 mt-10 sm:mt-0">
+        <h1 class="text-2xl sm:text-4xl lg:text-5xl font-semibold text-slate-800 dark:text-slate-100 mb-1 sm:mb-2" data-i18n="title">
           Is it worth the time?
         </h1>
-        <p class="text-lg leading-tight text-slate-600 dark:text-slate-300 mx-auto" id="subtitle">
+        <p class="text-sm sm:text-lg leading-tight text-slate-600 dark:text-slate-300 mx-auto px-2" id="subtitle">
           How much money you can spend automating a task before you're spending more than you save
         </p>
       </header>
 
       <div class="table-controls">
         <div class="salary-input-container">
-          <label for="salary" class="block text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="monthlySalary">
+          <label for="salary" class="block text-xs sm:text-base text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="monthlySalary">
             Monthly Salary
           </label>
           <div class="salary-input-wrapper">
@@ -78,7 +78,7 @@ const preCalculatedData = timeSavings.map(time =>
         </div>
 
         <div class="spend-toggle-container">
-          <label class="block text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="viewAs">View As</label>
+          <label class="block text-xs sm:text-base text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="viewAs">View As</label>
           <div class="spend-toggle">
             <button type="button" class="toggle-btn active" data-spend="money" data-i18n="money">Money</button>
             <button type="button" class="toggle-btn" data-spend="time" data-i18n="time">Time</button>
@@ -86,7 +86,7 @@ const preCalculatedData = timeSavings.map(time =>
         </div>
 
         <div class="billing-toggle-container">
-          <label class="block text-slate-700 dark:text-slate-300 font-medium  mb-1 sm:mb-2" data-i18n="savedPer">Saved Per</label>
+          <label class="block text-xs sm:text-base text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="savedPer">Saved Per</label>
           <div class="billing-toggle">
             <button type="button" class="toggle-btn active" data-period="monthly" data-i18n="month">Month</button>
             <button type="button" class="toggle-btn" data-period="annual" data-i18n="year">Year</button>
@@ -131,8 +131,8 @@ const preCalculatedData = timeSavings.map(time =>
         </div>
       </div>
 
-      <div class="mt-8 text-center text-slate-600 dark:text-slate-400">
-        <p class="text-sm max-w-xl mx-auto" data-i18n="instructions">
+      <div class="mt-4 sm:mt-8 text-center text-slate-600 dark:text-slate-400 px-2">
+        <p class="text-xs sm:text-sm max-w-xl mx-auto" data-i18n="instructions">
           Each cell shows the value of time saved over a month or year based on task frequency. For example, saving 1 minute daily is worth the equivalent of several hours per month. Based on 2,000 working hours per year (8 hours × 250 days).
         </p>
       </div>
@@ -554,6 +554,125 @@ const preCalculatedData = timeSavings.map(time =>
     .time-table th,
     .time-table td {
       padding: 0.625rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .language-switcher {
+      top: 0.5rem;
+      right: 0.5rem;
+    }
+
+    .lang-selector {
+      padding: 0.375rem 0.5rem;
+      font-size: 0.8rem;
+      gap: 0.375rem;
+    }
+
+    .lang-name {
+      min-width: 60px;
+    }
+
+    .lang-flag {
+      font-size: 1rem;
+    }
+  }
+
+  /* Small phones (iPhone 5/SE - 320px) */
+  @media (max-width: 380px) {
+    .table-controls {
+      gap: 0.75rem;
+    }
+
+    .toggle-btn {
+      padding: 0.25rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .salary-input {
+      width: 100px;
+      font-size: 0.9rem;
+    }
+
+    .salary-prefix {
+      padding-left: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .table-container {
+      padding: 0.25rem;
+      border-radius: 8px;
+    }
+
+    .time-table th,
+    .time-table td {
+      padding: 0.5rem 0.35rem;
+      font-size: 0.65rem;
+    }
+
+    .time-header {
+      padding-left: 0.5rem !important;
+    }
+
+    .corner-cell {
+      min-width: 70px;
+    }
+
+    .corner-cell .time-label,
+    .corner-cell .freq-label {
+      font-size: 0.55rem;
+    }
+
+    .corner-cell .time-label {
+      bottom: 2px;
+      left: 4px;
+    }
+
+    .corner-cell .freq-label {
+      top: 2px;
+      right: 4px;
+    }
+
+    .freq-header {
+      min-width: 2.5rem;
+    }
+
+    .lang-selector {
+      padding: 0.25rem 0.375rem;
+      font-size: 0.75rem;
+    }
+
+    .lang-name {
+      display: none;
+    }
+
+    .lang-arrow {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+
+    .lang-dropdown {
+      min-width: 150px;
+    }
+  }
+
+  /* Extra small - iPhone 5 exactly (320px) */
+  @media (max-width: 320px) {
+    .time-table th,
+    .time-table td {
+      padding: 0.375rem 0.25rem;
+      font-size: 0.6rem;
+    }
+
+    .corner-cell {
+      min-width: 60px;
+    }
+
+    .freq-header {
+      min-width: 2rem;
+    }
+
+    .toggle-btn {
+      padding: 0.25rem 0.5rem;
       font-size: 0.75rem;
     }
   }
