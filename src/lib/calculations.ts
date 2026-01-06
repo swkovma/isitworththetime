@@ -72,30 +72,29 @@ export function calculateTimeValue(
 
 /**
  * Format a monetary value for display with currency symbol.
+ * @param symbolAfter - if true, places symbol after the number (for non-English languages)
  */
-export function formatCurrency(value: number, symbol: string = '$'): string {
+export function formatCurrency(value: number, symbol: string = '$', symbolAfter: boolean = false): string {
+  let numStr: string;
   if (value >= 1_000_000_000) {
-    return symbol + Math.round(value / 1_000_000_000) + 'B';
+    numStr = Math.round(value / 1_000_000_000) + 'B';
+  } else if (value >= 10_000_000) {
+    numStr = Math.round(value / 1_000_000) + 'M';
+  } else if (value >= 1_000_000) {
+    numStr = (value / 1_000_000).toFixed(0).replace(/\.0$/, '') + 'M';
+  } else if (value >= 10_000) {
+    numStr = Math.round(value / 1000) + 'k';
+  } else if (value >= 1_000) {
+    numStr = (value / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+  } else if (value >= 1) {
+    numStr = String(Math.round(value));
+  } else if (value >= 0.1) {
+    numStr = value.toFixed(2);
+  } else {
+    numStr = '0';
   }
-  if (value >= 10_000_000) {
-    return symbol + Math.round(value / 1_000_000) + 'M';
-  }
-  if (value >= 1_000_000) {
-    return symbol + (value / 1_000_000).toFixed(0).replace(/\.0$/, '') + 'M';
-  }
-  if (value >= 10_000) {
-    return symbol + Math.round(value / 1000) + 'k';
-  }
-  if (value >= 1_000) {
-    return symbol + (value / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
-  }
-  if (value >= 1) {
-    return symbol + Math.round(value);
-  }
-  if (value >= 0.1) {
-    return symbol + value.toFixed(2);
-  }
-  return symbol + '0';
+
+  return symbolAfter ? numStr + symbol : symbol + numStr;
 }
 
 /**
@@ -262,24 +261,29 @@ export interface CellDisplayResult {
 /**
  * Get all display values for a table cell.
  * Used by both static generation and client-side updates.
+ * @param monthlySalary - monthly salary (will be converted to annual internally)
+ * @param symbolAfter - if true, places currency symbol after the number
  */
 export function getCellDisplay(
-  salary: number,
+  monthlySalary: number,
   freqMultiplier: number,
   timeSeconds: number,
   period: 'annual' | 'monthly',
   mode: 'money' | 'time',
-  currencySymbol: string = '$'
+  currencySymbol: string = '$',
+  symbolAfter: boolean = false
 ): CellDisplayResult {
-  const displayMoney = calculateCellValue(salary, freqMultiplier, timeSeconds, period);
-  const annualValue = calculateCellValue(salary, freqMultiplier, timeSeconds, 'annual');
+  // Convert monthly salary to annual for calculations
+  const annualSalary = monthlySalary * 12;
+  const displayMoney = calculateCellValue(annualSalary, freqMultiplier, timeSeconds, period);
+  const annualValue = calculateCellValue(annualSalary, freqMultiplier, timeSeconds, 'annual');
   const displaySeconds = calculateTimeValue(freqMultiplier, timeSeconds, period);
 
   if (mode === 'money') {
     return {
-      text: salary > 0 ? formatCurrency(displayMoney, currencySymbol) : '—',
-      opacity: salary > 0 ? getCurrencyOpacity(annualValue, salary) : 1,
-      tier: salary > 0 && annualValue > 0 ? getCurrencyTier(annualValue, salary) : '',
+      text: monthlySalary > 0 ? formatCurrency(displayMoney, currencySymbol, symbolAfter) : '—',
+      opacity: monthlySalary > 0 ? getCurrencyOpacity(annualValue, annualSalary) : 1,
+      tier: monthlySalary > 0 && annualValue > 0 ? getCurrencyTier(annualValue, annualSalary) : '',
     };
   } else {
     return {

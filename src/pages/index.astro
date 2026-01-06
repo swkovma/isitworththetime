@@ -2,16 +2,16 @@
 import Layout from '@layouts/Layout.astro';
 import { frequencies, timeSavings, getCellDisplay } from '@lib/calculations';
 
-// Pre-calculate table values at build time (default: $100k, monthly, money mode)
-const DEFAULT_SALARY = 100000;
-const DEFAULT_SALARY_STR = '100,000';
+// Pre-calculate table values at build time (default: $2,000/month, monthly, money mode)
+const DEFAULT_SALARY = 2000;
+const DEFAULT_SALARY_STR = '2,000';
 const DEFAULT_PERIOD = 'monthly' as const;
 const DEFAULT_MODE = 'money' as const;
 const DEFAULT_CURRENCY = '$';
 
 const preCalculatedData = timeSavings.map(time =>
   frequencies.map(freq =>
-    getCellDisplay(DEFAULT_SALARY, freq.multiplier, time.seconds, DEFAULT_PERIOD, DEFAULT_MODE, DEFAULT_CURRENCY)
+    getCellDisplay(DEFAULT_SALARY, freq.multiplier, time.seconds, DEFAULT_PERIOD, DEFAULT_MODE, DEFAULT_CURRENCY, false)
   )
 );
 ---
@@ -19,6 +19,37 @@ const preCalculatedData = timeSavings.map(time =>
 <Layout title="Is It Worth The Time?" description="Calculate how much to spend on time-saving tools based on your salary and the time you'll save.">
   <main class="min-h-screen flex flex-col justify-center">
     <div class="site-section grow-0">
+      <div class="language-switcher">
+        <button type="button" class="lang-selector" id="lang-selector">
+          <span class="lang-flag" id="current-flag">🇺🇸</span>
+          <span class="lang-name" id="current-lang-name">English</span>
+          <svg class="lang-arrow" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <button type="button" class="lang-option" data-lang="en"><span class="lang-flag">🇺🇸</span><span>English</span></button>
+          <button type="button" class="lang-option" data-lang="zh"><span class="lang-flag">🇨🇳</span><span>中文</span></button>
+          <button type="button" class="lang-option" data-lang="hi"><span class="lang-flag">🇮🇳</span><span>हिन्दी</span></button>
+          <button type="button" class="lang-option" data-lang="es"><span class="lang-flag">🇪🇸</span><span>Español</span></button>
+          <button type="button" class="lang-option" data-lang="fr"><span class="lang-flag">🇫🇷</span><span>Français</span></button>
+          <button type="button" class="lang-option" data-lang="ar"><span class="lang-flag">🇸🇦</span><span>العربية</span></button>
+          <button type="button" class="lang-option" data-lang="bn"><span class="lang-flag">🇧🇩</span><span>বাংলা</span></button>
+          <button type="button" class="lang-option" data-lang="pt"><span class="lang-flag">🇧🇷</span><span>Português</span></button>
+          <button type="button" class="lang-option" data-lang="ru"><span class="lang-flag">🇷🇺</span><span>Русский</span></button>
+          <button type="button" class="lang-option" data-lang="ja"><span class="lang-flag">🇯🇵</span><span>日本語</span></button>
+          <button type="button" class="lang-option" data-lang="de"><span class="lang-flag">🇩🇪</span><span>Deutsch</span></button>
+          <button type="button" class="lang-option" data-lang="ko"><span class="lang-flag">🇰🇷</span><span>한국어</span></button>
+          <button type="button" class="lang-option" data-lang="vi"><span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span></button>
+          <button type="button" class="lang-option" data-lang="it"><span class="lang-flag">🇮🇹</span><span>Italiano</span></button>
+          <button type="button" class="lang-option" data-lang="tr"><span class="lang-flag">🇹🇷</span><span>Türkçe</span></button>
+          <button type="button" class="lang-option" data-lang="pl"><span class="lang-flag">🇵🇱</span><span>Polski</span></button>
+          <button type="button" class="lang-option" data-lang="uk"><span class="lang-flag">🇺🇦</span><span>Українська</span></button>
+          <button type="button" class="lang-option" data-lang="nl"><span class="lang-flag">🇳🇱</span><span>Nederlands</span></button>
+          <button type="button" class="lang-option" data-lang="th"><span class="lang-flag">🇹🇭</span><span>ไทย</span></button>
+          <button type="button" class="lang-option" data-lang="id"><span class="lang-flag">🇮🇩</span><span>Indonesia</span></button>
+        </div>
+      </div>
       <header class="text-center mb-12">
         <h1 class="text-4xl lg:text-5xl font-semibold text-slate-800 dark:text-slate-100 mb-1 sm:mb-2" data-i18n="title">
           Is it worth the time?
@@ -30,8 +61,8 @@ const preCalculatedData = timeSavings.map(time =>
 
       <div class="table-controls">
         <div class="salary-input-container">
-          <label for="salary" class="block text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="annualSalary">
-            Annual Salary
+          <label for="salary" class="block text-slate-700 dark:text-slate-300 font-medium mb-1 sm:mb-2" data-i18n="monthlySalary">
+            Monthly Salary
           </label>
           <div class="salary-input-wrapper">
             <span class="salary-prefix" id="currency-symbol">{DEFAULT_CURRENCY}</span>
@@ -100,34 +131,122 @@ const preCalculatedData = timeSavings.map(time =>
         </div>
       </div>
 
-      <div class="mt-12 text-center text-slate-600 dark:text-slate-400">
-        <p class="font-medium mb-2" data-i18n="howToRead">How to read this table</p>
-        <p class="text-sm max-w-xl mx-auto mb-2" data-i18n="instructions">
-          Each cell is the value of time saved over a month or year based on how often you do the task. For example, a tool saving 1 minute daily is worth up to $17/month on a $100k salary. View As shows monetary value or time saved. Saved Per shows monthly or yearly savings. Based on 2,000 working hours per year (8 hours × 250 days).
+      <div class="mt-8 text-center text-slate-600 dark:text-slate-400">
+        <p class="text-sm max-w-xl mx-auto" data-i18n="instructions">
+          Each cell shows the value of time saved over a month or year based on task frequency. For example, saving 1 minute daily is worth the equivalent of several hours per month. Based on 2,000 working hours per year (8 hours × 250 days).
         </p>
       </div>
-
-      <footer class="footer mt-12">
-        <a href="https://github.com/hoxxep/isitworththetime" target="_blank" rel="noopener noreferrer" class="footer-link">
-          <svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-          </svg>
-          <span data-i18n="starOnGithub">Star on GitHub</span>
-        </a>
-        <a href="https://xkcd.com/1205/" target="_blank" rel="noopener noreferrer" class="footer-link">
-          <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-          <span data-i18n="basedOnXkcd">Based on xkcd #1205</span>
-        </a>
-      </footer>
     </div>
   </main>
 </Layout>
 
 <style>
+  .language-switcher {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 100;
+  }
+
+  .lang-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid rgb(var(--accent-border));
+    background: rgb(var(--bg-surface));
+    color: rgb(var(--accent-grey));
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-radius: 8px;
+  }
+
+  .lang-selector:hover {
+    background: rgb(var(--bg-grey));
+    border-color: rgb(var(--accent-grey-light));
+  }
+
+  .lang-flag {
+    font-size: 1.125rem;
+    line-height: 1;
+  }
+
+  .lang-name {
+    min-width: 70px;
+    text-align: left;
+  }
+
+  .lang-arrow {
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  .language-switcher.open .lang-arrow {
+    transform: rotate(180deg);
+  }
+
+  .lang-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 180px;
+    max-height: 320px;
+    overflow-y: auto;
+    background: rgb(var(--bg-surface));
+    border: 1px solid rgb(var(--accent-border));
+    border-radius: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+  }
+
+  .language-switcher.open .lang-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    text-align: left;
+    border: none;
+    background: transparent;
+    color: rgb(var(--accent-grey));
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .lang-option:first-child {
+    border-radius: 7px 7px 0 0;
+  }
+
+  .lang-option:last-child {
+    border-radius: 0 0 7px 7px;
+  }
+
+  .lang-option:hover {
+    background: rgb(var(--bg-grey));
+  }
+
+  .lang-option.active {
+    background: rgb(var(--bg-blue-light));
+    color: rgb(var(--accent-blue));
+  }
+
+  .lang-option .lang-flag {
+    font-size: 1.25rem;
+  }
+
   .table-controls {
     display: flex;
     justify-content: space-evenly;
@@ -378,39 +497,6 @@ const preCalculatedData = timeSavings.map(time =>
     .value-cell.tier-5:hover { background: rgba(244, 114, 182, 0.18); }
   }
 
-  .footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .footer-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: rgb(var(--accent-grey));
-    text-decoration: none;
-    border-radius: 8px;
-    border: 1px solid rgb(var(--accent-border));
-    background: rgb(var(--bg-surface));
-    transition: all 0.15s ease;
-  }
-
-  .footer-link:hover {
-    border-color: rgb(var(--accent-grey-light));
-    background: rgb(var(--bg-grey));
-  }
-
-  .footer-icon {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
-  }
-
   @media (max-width: 640px) {
     .table-controls {
       flex-direction: column;
@@ -470,16 +556,6 @@ const preCalculatedData = timeSavings.map(time =>
       padding: 0.625rem 0.5rem;
       font-size: 0.75rem;
     }
-
-    .footer {
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .footer-link {
-      width: 100%;
-      justify-content: center;
-    }
   }
 </style>
 
@@ -494,7 +570,7 @@ const preCalculatedData = timeSavings.map(time =>
     title: string;
     subtitleMoney: string;
     subtitleTime: string;
-    annualSalary: string;
+    monthlySalary: string;
     savedPer: string;
     month: string;
     year: string;
@@ -503,10 +579,7 @@ const preCalculatedData = timeSavings.map(time =>
     time: string;
     timeSaved: string;
     frequency: string;
-    howToRead: string;
     instructions: string;
-    starOnGithub: string;
-    basedOnXkcd: string;
     // Frequency labels
     freq50day: string;
     freq5day: string;
@@ -531,7 +604,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: 'Is it worth the time?',
       subtitleMoney: 'How much money you can spend automating a task before you\'re spending more than you save',
       subtitleTime: 'How much time you can spend automating a task before you\'re spending more than you save',
-      annualSalary: 'Annual Salary',
+      monthlySalary: 'Monthly Salary',
       savedPer: 'Saved Per',
       month: 'Month',
       year: 'Year',
@@ -540,10 +613,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Time',
       timeSaved: 'Time Saved',
       frequency: 'Frequency',
-      howToRead: 'How to read this table',
-      instructions: 'Each cell is the value of time saved over a month or year based on how often you do the task. For example, a tool saving 1 minute daily is worth up to $17/month on a $100k salary. View As shows monetary value or time saved. Saved Per shows monthly or yearly savings. Based on 2,000 working hours per year (8 hours × 250 days).',
-      starOnGithub: 'Star on GitHub',
-      basedOnXkcd: 'Based on xkcd #1205',
+      instructions: 'Each cell shows the value of time saved over a month or year based on task frequency. For example, saving 1 minute daily is worth the equivalent of several hours per month. Based on 2,000 working hours per year (8 hours × 250 days).',
       freq50day: '50/day',
       freq5day: '5/day',
       freqDaily: 'Daily',
@@ -564,7 +634,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: '¿Vale la pena el tiempo?',
       subtitleMoney: 'Cuánto dinero puedes gastar automatizando una tarea antes de gastar más de lo que ahorras',
       subtitleTime: 'Cuánto tiempo puedes dedicar a automatizar una tarea antes de gastar más de lo que ahorras',
-      annualSalary: 'Salario Anual',
+      monthlySalary: 'Salario Mensual',
       savedPer: 'Ahorrado Por',
       month: 'Mes',
       year: 'Año',
@@ -573,10 +643,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Tiempo',
       timeSaved: 'Tiempo Ahorrado',
       frequency: 'Frecuencia',
-      howToRead: 'Cómo leer esta tabla',
-      instructions: 'Cada celda es el valor del tiempo ahorrado en un mes o año según la frecuencia con la que realizas la tarea. Por ejemplo, una herramienta que ahorra 1 minuto diario vale hasta $17/mes con un salario de $100k. Ver Como muestra el valor monetario o el tiempo ahorrado. Ahorrado Por muestra los ahorros mensuales o anuales. Basado en 2,000 horas de trabajo por año (8 horas × 250 días).',
-      starOnGithub: 'Estrella en GitHub',
-      basedOnXkcd: 'Basado en xkcd #1205',
+      instructions: 'Cada celda muestra el valor del tiempo ahorrado en un mes o año según la frecuencia de la tarea. Por ejemplo, ahorrar 1 minuto diario equivale a varias horas al mes. Basado en 2.000 horas de trabajo por año (8 horas × 250 días).',
       freq50day: '50/día',
       freq5day: '5/día',
       freqDaily: 'Diario',
@@ -597,7 +664,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: 'Est-ce que ça vaut le temps?',
       subtitleMoney: 'Combien d\'argent vous pouvez dépenser pour automatiser une tâche avant de dépenser plus que vous n\'économisez',
       subtitleTime: 'Combien de temps vous pouvez consacrer à automatiser une tâche avant de dépenser plus que vous n\'économisez',
-      annualSalary: 'Salaire Annuel',
+      monthlySalary: 'Salaire Mensuel',
       savedPer: 'Économisé Par',
       month: 'Mois',
       year: 'An',
@@ -606,10 +673,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Temps',
       timeSaved: 'Temps Économisé',
       frequency: 'Fréquence',
-      howToRead: 'Comment lire ce tableau',
-      instructions: 'Chaque cellule représente la valeur du temps économisé sur un mois ou une année selon la fréquence de la tâche. Par exemple, un outil qui économise 1 minute par jour vaut jusqu\'à 17$/mois avec un salaire de 100k$. Afficher En montre la valeur monétaire ou le temps économisé. Économisé Par montre les économies mensuelles ou annuelles. Basé sur 2 000 heures de travail par an (8 heures × 250 jours).',
-      starOnGithub: 'Étoile sur GitHub',
-      basedOnXkcd: 'Basé sur xkcd #1205',
+      instructions: 'Chaque cellule montre la valeur du temps économisé sur un mois ou une année selon la fréquence de la tâche. Par exemple, économiser 1 minute par jour équivaut à plusieurs heures par mois. Basé sur 2 000 heures de travail par an (8 heures × 250 jours).',
       freq50day: '50/jour',
       freq5day: '5/jour',
       freqDaily: 'Quotidien',
@@ -630,7 +694,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: 'Lohnt sich die Zeit?',
       subtitleMoney: 'Wie viel Geld du für die Automatisierung einer Aufgabe ausgeben kannst, bevor du mehr ausgibst als du sparst',
       subtitleTime: 'Wie viel Zeit du für die Automatisierung einer Aufgabe aufwenden kannst, bevor du mehr ausgibst als du sparst',
-      annualSalary: 'Jahresgehalt',
+      monthlySalary: 'Monatsgehalt',
       savedPer: 'Gespart Pro',
       month: 'Monat',
       year: 'Jahr',
@@ -639,10 +703,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Zeit',
       timeSaved: 'Gesparte Zeit',
       frequency: 'Häufigkeit',
-      howToRead: 'So liest du diese Tabelle',
-      instructions: 'Jede Zelle zeigt den Wert der gesparten Zeit über einen Monat oder ein Jahr, je nachdem wie oft du die Aufgabe erledigst. Beispiel: Ein Werkzeug, das täglich 1 Minute spart, ist bei einem Gehalt von 100k$ bis zu 17$/Monat wert. Anzeigen Als zeigt den Geldwert oder die gesparte Zeit. Gespart Pro zeigt monatliche oder jährliche Einsparungen. Basierend auf 2.000 Arbeitsstunden pro Jahr (8 Stunden × 250 Tage).',
-      starOnGithub: 'Stern auf GitHub',
-      basedOnXkcd: 'Basiert auf xkcd #1205',
+      instructions: 'Jede Zelle zeigt den Wert der gesparten Zeit über einen Monat oder ein Jahr basierend auf der Aufgabenhäufigkeit. Zum Beispiel entspricht das Einsparen von 1 Minute täglich mehreren Stunden pro Monat. Basierend auf 2.000 Arbeitsstunden pro Jahr (8 Stunden × 250 Tage).',
       freq50day: '50/Tag',
       freq5day: '5/Tag',
       freqDaily: 'Täglich',
@@ -663,7 +724,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: 'Vale a pena o tempo?',
       subtitleMoney: 'Quanto dinheiro você pode gastar automatizando uma tarefa antes de gastar mais do que economiza',
       subtitleTime: 'Quanto tempo você pode gastar automatizando uma tarefa antes de gastar mais do que economiza',
-      annualSalary: 'Salário Anual',
+      monthlySalary: 'Salário Mensal',
       savedPer: 'Economizado Por',
       month: 'Mês',
       year: 'Ano',
@@ -672,10 +733,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Tempo',
       timeSaved: 'Tempo Economizado',
       frequency: 'Frequência',
-      howToRead: 'Como ler esta tabela',
-      instructions: 'Cada célula é o valor do tempo economizado em um mês ou ano com base na frequência da tarefa. Por exemplo, uma ferramenta que economiza 1 minuto diário vale até $17/mês com um salário de $100k. Ver Como mostra o valor monetário ou tempo economizado. Economizado Por mostra as economias mensais ou anuais. Baseado em 2.000 horas de trabalho por ano (8 horas × 250 dias).',
-      starOnGithub: 'Estrela no GitHub',
-      basedOnXkcd: 'Baseado em xkcd #1205',
+      instructions: 'Cada célula mostra o valor do tempo economizado em um mês ou ano com base na frequência da tarefa. Por exemplo, economizar 1 minuto diário equivale a várias horas por mês. Baseado em 2.000 horas de trabalho por ano (8 horas × 250 dias).',
       freq50day: '50/dia',
       freq5day: '5/dia',
       freqDaily: 'Diário',
@@ -696,7 +754,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: '值得花时间吗？',
       subtitleMoney: '在自动化任务上可以花多少钱，才不会花费超过节省的成本',
       subtitleTime: '在自动化任务上可以花多少时间，才不会花费超过节省的成本',
-      annualSalary: '年薪',
+      monthlySalary: '月薪',
       savedPer: '节省周期',
       month: '月',
       year: '年',
@@ -705,10 +763,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: '时间',
       timeSaved: '节省时间',
       frequency: '频率',
-      howToRead: '如何阅读此表',
-      instructions: '每个单元格显示根据任务频率在一个月或一年内节省的时间价值。例如，每天节省1分钟的工具，在10万美元年薪下每月价值17美元。显示为显示金钱价值或节省的时间。节省周期显示月度或年度节省。基于每年2,000个工作小时（8小时×250天）。',
-      starOnGithub: '在GitHub上加星',
-      basedOnXkcd: '基于 xkcd #1205',
+      instructions: '每个单元格显示基于任务频率在一个月或一年内节省的时间价值。例如，每天节省1分钟相当于每月节省几个小时。基于每年2000个工作小时（8小时×250天）。',
       freq50day: '50次/天',
       freq5day: '5次/天',
       freqDaily: '每天',
@@ -729,7 +784,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: '時間をかける価値はある？',
       subtitleMoney: 'タスクの自動化に節約以上のコストをかける前に、いくらまでお金を使えるか',
       subtitleTime: 'タスクの自動化に節約以上のコストをかける前に、どれだけ時間を使えるか',
-      annualSalary: '年収',
+      monthlySalary: '月収',
       savedPer: '節約単位',
       month: '月',
       year: '年',
@@ -738,10 +793,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: '時間',
       timeSaved: '節約時間',
       frequency: '頻度',
-      howToRead: 'この表の読み方',
-      instructions: '各セルは、タスクの頻度に基づいて1ヶ月または1年間で節約される時間の価値を示しています。例えば、毎日1分節約するツールは、年収10万ドルの場合、月額17ドルの価値があります。表示形式は金銭的価値または節約時間を表示します。節約単位は月額または年額の節約を表示します。年間2,000労働時間（8時間×250日）に基づいています。',
-      starOnGithub: 'GitHubでスター',
-      basedOnXkcd: 'xkcd #1205に基づく',
+      instructions: '各セルは、タスクの頻度に基づいて月または年単位で節約される時間の価値を示します。例えば、毎日1分節約すると月に数時間分に相当します。年間2,000労働時間（8時間×250日）に基づいています。',
       freq50day: '50回/日',
       freq5day: '5回/日',
       freqDaily: '毎日',
@@ -762,7 +814,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: 'Vale la pena il tempo?',
       subtitleMoney: 'Quanto denaro puoi spendere per automatizzare un\'attività prima di spendere più di quanto risparmi',
       subtitleTime: 'Quanto tempo puoi dedicare ad automatizzare un\'attività prima di spendere più di quanto risparmi',
-      annualSalary: 'Stipendio Annuale',
+      monthlySalary: 'Stipendio Mensile',
       savedPer: 'Risparmiato Per',
       month: 'Mese',
       year: 'Anno',
@@ -771,10 +823,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Tempo',
       timeSaved: 'Tempo Risparmiato',
       frequency: 'Frequenza',
-      howToRead: 'Come leggere questa tabella',
-      instructions: 'Ogni cella rappresenta il valore del tempo risparmiato in un mese o un anno in base alla frequenza dell\'attività. Ad esempio, uno strumento che risparmia 1 minuto al giorno vale fino a $17/mese con uno stipendio di $100k. Visualizza Come mostra il valore monetario o il tempo risparmiato. Risparmiato Per mostra i risparmi mensili o annuali. Basato su 2.000 ore lavorative all\'anno (8 ore × 250 giorni).',
-      starOnGithub: 'Stella su GitHub',
-      basedOnXkcd: 'Basato su xkcd #1205',
+      instructions: 'Ogni cella mostra il valore del tempo risparmiato in un mese o anno in base alla frequenza dell\'attività. Ad esempio, risparmiare 1 minuto al giorno equivale a diverse ore al mese. Basato su 2.000 ore lavorative all\'anno (8 ore × 250 giorni).',
       freq50day: '50/giorno',
       freq5day: '5/giorno',
       freqDaily: 'Giornaliero',
@@ -795,7 +844,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: 'Is het de tijd waard?',
       subtitleMoney: 'Hoeveel geld je kunt uitgeven aan het automatiseren van een taak voordat je meer uitgeeft dan je bespaart',
       subtitleTime: 'Hoeveel tijd je kunt besteden aan het automatiseren van een taak voordat je meer uitgeeft dan je bespaart',
-      annualSalary: 'Jaarsalaris',
+      monthlySalary: 'Maandsalaris',
       savedPer: 'Bespaard Per',
       month: 'Maand',
       year: 'Jaar',
@@ -804,10 +853,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Tijd',
       timeSaved: 'Bespaarde Tijd',
       frequency: 'Frequentie',
-      howToRead: 'Hoe deze tabel te lezen',
-      instructions: 'Elke cel toont de waarde van bespaarde tijd over een maand of jaar op basis van hoe vaak je de taak uitvoert. Bijvoorbeeld, een tool die dagelijks 1 minuut bespaart is tot $17/maand waard bij een salaris van $100k. Weergeven Als toont geldwaarde of bespaarde tijd. Bespaard Per toont maandelijkse of jaarlijkse besparingen. Gebaseerd op 2.000 werkuren per jaar (8 uur × 250 dagen).',
-      starOnGithub: 'Ster op GitHub',
-      basedOnXkcd: 'Gebaseerd op xkcd #1205',
+      instructions: 'Elke cel toont de waarde van bespaarde tijd over een maand of jaar op basis van taakfrequentie. Bijvoorbeeld, 1 minuut per dag besparen is gelijk aan meerdere uren per maand. Gebaseerd op 2.000 werkuren per jaar (8 uur × 250 dagen).',
       freq50day: '50/dag',
       freq5day: '5/dag',
       freqDaily: 'Dagelijks',
@@ -828,7 +874,7 @@ const preCalculatedData = timeSavings.map(time =>
       title: 'Стоит ли это времени?',
       subtitleMoney: 'Сколько денег можно потратить на автоматизацию задачи, прежде чем затраты превысят экономию',
       subtitleTime: 'Сколько времени можно потратить на автоматизацию задачи, прежде чем затраты превысят экономию',
-      annualSalary: 'Годовая зарплата',
+      monthlySalary: 'Месячная зарплата',
       savedPer: 'Сэкономлено за',
       month: 'Месяц',
       year: 'Год',
@@ -837,10 +883,7 @@ const preCalculatedData = timeSavings.map(time =>
       time: 'Время',
       timeSaved: 'Сэкономленное время',
       frequency: 'Частота',
-      howToRead: 'Как читать эту таблицу',
-      instructions: 'Каждая ячейка показывает ценность сэкономленного времени за месяц или год в зависимости от частоты выполнения задачи. Например, инструмент, экономящий 1 минуту ежедневно, стоит до $17/месяц при зарплате $100k. Показать как отображает денежную ценность или сэкономленное время. Сэкономлено за показывает месячную или годовую экономию. Основано на 2000 рабочих часов в год (8 часов × 250 дней).',
-      starOnGithub: 'Звезда на GitHub',
-      basedOnXkcd: 'На основе xkcd #1205',
+      instructions: 'Каждая ячейка показывает ценность сэкономленного времени за месяц или год в зависимости от частоты задачи. Например, экономия 1 минуты в день эквивалентна нескольким часам в месяц. На основе 2000 рабочих часов в год (8 часов × 250 дней).',
       freq50day: '50/день',
       freq5day: '5/день',
       freqDaily: 'Ежедневно',
@@ -857,75 +900,420 @@ const preCalculatedData = timeSavings.map(time =>
       time4hours: '4 часа',
       time1day: '1 день',
     },
+    hi: {
+      title: 'क्या यह समय के लायक है?',
+      subtitleMoney: 'किसी कार्य को स्वचालित करने पर कितना पैसा खर्च कर सकते हैं, इससे पहले कि आप बचत से अधिक खर्च करें',
+      subtitleTime: 'किसी कार्य को स्वचालित करने में कितना समय लगा सकते हैं, इससे पहले कि आप बचत से अधिक खर्च करें',
+      monthlySalary: 'मासिक वेतन',
+      savedPer: 'बचत प्रति',
+      month: 'महीना',
+      year: 'वर्ष',
+      viewAs: 'के रूप में देखें',
+      money: 'पैसा',
+      time: 'समय',
+      timeSaved: 'बचाया गया समय',
+      frequency: 'आवृत्ति',
+      instructions: 'प्रत्येक सेल कार्य की आवृत्ति के आधार पर एक महीने या वर्ष में बचाए गए समय का मूल्य दिखाता है। उदाहरण के लिए, प्रतिदिन 1 मिनट बचाना महीने में कई घंटों के बराबर है। प्रति वर्ष 2,000 कार्य घंटों (8 घंटे × 250 दिन) पर आधारित।',
+      freq50day: '50/दिन',
+      freq5day: '5/दिन',
+      freqDaily: 'दैनिक',
+      freqWeekly: 'साप्ताहिक',
+      freqMonthly: 'मासिक',
+      freqYearly: 'वार्षिक',
+      time1sec: '1 सेकंड',
+      time5sec: '5 सेकंड',
+      time30sec: '30 सेकंड',
+      time1min: '1 मिनट',
+      time5min: '5 मिनट',
+      time30min: '30 मिनट',
+      time1hour: '1 घंटा',
+      time4hours: '4 घंटे',
+      time1day: '1 दिन',
+    },
+    ar: {
+      title: 'هل يستحق الوقت؟',
+      subtitleMoney: 'كم من المال يمكنك إنفاقه على أتمتة مهمة قبل أن تنفق أكثر مما توفر',
+      subtitleTime: 'كم من الوقت يمكنك إنفاقه على أتمتة مهمة قبل أن تنفق أكثر مما توفر',
+      monthlySalary: 'الراتب الشهري',
+      savedPer: 'التوفير لكل',
+      month: 'شهر',
+      year: 'سنة',
+      viewAs: 'عرض كـ',
+      money: 'مال',
+      time: 'وقت',
+      timeSaved: 'الوقت الموفر',
+      frequency: 'التكرار',
+      instructions: 'تُظهر كل خلية قيمة الوقت الموفر خلال شهر أو سنة بناءً على تكرار المهمة. على سبيل المثال، توفير دقيقة واحدة يومياً يعادل عدة ساعات شهرياً. بناءً على 2000 ساعة عمل سنوياً (8 ساعات × 250 يوماً).',
+      freq50day: '50/يوم',
+      freq5day: '5/يوم',
+      freqDaily: 'يومياً',
+      freqWeekly: 'أسبوعياً',
+      freqMonthly: 'شهرياً',
+      freqYearly: 'سنوياً',
+      time1sec: '1 ثانية',
+      time5sec: '5 ثواني',
+      time30sec: '30 ثانية',
+      time1min: '1 دقيقة',
+      time5min: '5 دقائق',
+      time30min: '30 دقيقة',
+      time1hour: '1 ساعة',
+      time4hours: '4 ساعات',
+      time1day: '1 يوم',
+    },
+    bn: {
+      title: 'এটা কি সময়ের মূল্য?',
+      subtitleMoney: 'একটি কাজ স্বয়ংক্রিয় করতে কত টাকা খরচ করতে পারেন, সঞ্চয়ের চেয়ে বেশি খরচ করার আগে',
+      subtitleTime: 'একটি কাজ স্বয়ংক্রিয় করতে কত সময় ব্যয় করতে পারেন, সঞ্চয়ের চেয়ে বেশি খরচ করার আগে',
+      monthlySalary: 'মাসিক বেতন',
+      savedPer: 'প্রতি সঞ্চয়',
+      month: 'মাস',
+      year: 'বছর',
+      viewAs: 'হিসাবে দেখুন',
+      money: 'টাকা',
+      time: 'সময়',
+      timeSaved: 'সঞ্চিত সময়',
+      frequency: 'ফ্রিকোয়েন্সি',
+      instructions: 'প্রতিটি সেল কাজের ফ্রিকোয়েন্সির উপর ভিত্তি করে এক মাস বা বছরে সঞ্চিত সময়ের মূল্য দেখায়। উদাহরণস্বরূপ, প্রতিদিন ১ মিনিট সাশ্রয় মাসে কয়েক ঘণ্টার সমতুল্য। বছরে ২,০০০ কর্মঘণ্টার (৮ ঘণ্টা × ২৫০ দিন) উপর ভিত্তি করে।',
+      freq50day: '50/দিন',
+      freq5day: '5/দিন',
+      freqDaily: 'দৈনিক',
+      freqWeekly: 'সাপ্তাহিক',
+      freqMonthly: 'মাসিক',
+      freqYearly: 'বার্ষিক',
+      time1sec: '1 সেকেন্ড',
+      time5sec: '5 সেকেন্ড',
+      time30sec: '30 সেকেন্ড',
+      time1min: '1 মিনিট',
+      time5min: '5 মিনিট',
+      time30min: '30 মিনিট',
+      time1hour: '1 ঘণ্টা',
+      time4hours: '4 ঘণ্টা',
+      time1day: '1 দিন',
+    },
+    ko: {
+      title: '시간을 들일 가치가 있을까?',
+      subtitleMoney: '절약하는 것보다 더 많이 지출하기 전에 작업 자동화에 얼마를 쓸 수 있는지',
+      subtitleTime: '절약하는 것보다 더 많이 지출하기 전에 작업 자동화에 얼마나 시간을 쓸 수 있는지',
+      monthlySalary: '월급',
+      savedPer: '절약 기준',
+      month: '월',
+      year: '년',
+      viewAs: '보기 형식',
+      money: '금액',
+      time: '시간',
+      timeSaved: '절약된 시간',
+      frequency: '빈도',
+      instructions: '각 셀은 작업 빈도에 따라 월 또는 연간 절약되는 시간의 가치를 보여줍니다. 예를 들어, 매일 1분을 절약하면 월 몇 시간에 해당합니다. 연간 2,000 근무시간(8시간 × 250일) 기준.',
+      freq50day: '50회/일',
+      freq5day: '5회/일',
+      freqDaily: '매일',
+      freqWeekly: '매주',
+      freqMonthly: '매월',
+      freqYearly: '매년',
+      time1sec: '1초',
+      time5sec: '5초',
+      time30sec: '30초',
+      time1min: '1분',
+      time5min: '5분',
+      time30min: '30분',
+      time1hour: '1시간',
+      time4hours: '4시간',
+      time1day: '1일',
+    },
+    vi: {
+      title: 'Có đáng để bỏ thời gian?',
+      subtitleMoney: 'Bạn có thể chi bao nhiêu tiền để tự động hóa một công việc trước khi chi nhiều hơn số tiền tiết kiệm được',
+      subtitleTime: 'Bạn có thể dành bao nhiêu thời gian để tự động hóa một công việc trước khi chi nhiều hơn số tiền tiết kiệm được',
+      monthlySalary: 'Lương hàng tháng',
+      savedPer: 'Tiết kiệm mỗi',
+      month: 'Tháng',
+      year: 'Năm',
+      viewAs: 'Xem dưới dạng',
+      money: 'Tiền',
+      time: 'Thời gian',
+      timeSaved: 'Thời gian tiết kiệm',
+      frequency: 'Tần suất',
+      instructions: 'Mỗi ô hiển thị giá trị thời gian tiết kiệm được trong một tháng hoặc năm dựa trên tần suất công việc. Ví dụ, tiết kiệm 1 phút mỗi ngày tương đương với vài giờ mỗi tháng. Dựa trên 2.000 giờ làm việc mỗi năm (8 giờ × 250 ngày).',
+      freq50day: '50/ngày',
+      freq5day: '5/ngày',
+      freqDaily: 'Hàng ngày',
+      freqWeekly: 'Hàng tuần',
+      freqMonthly: 'Hàng tháng',
+      freqYearly: 'Hàng năm',
+      time1sec: '1 giây',
+      time5sec: '5 giây',
+      time30sec: '30 giây',
+      time1min: '1 phút',
+      time5min: '5 phút',
+      time30min: '30 phút',
+      time1hour: '1 giờ',
+      time4hours: '4 giờ',
+      time1day: '1 ngày',
+    },
+    tr: {
+      title: 'Zaman harcamaya değer mi?',
+      subtitleMoney: 'Tasarruf ettiğinizden fazlasını harcamadan önce bir görevi otomatikleştirmek için ne kadar para harcayabilirsiniz',
+      subtitleTime: 'Tasarruf ettiğinizden fazlasını harcamadan önce bir görevi otomatikleştirmek için ne kadar zaman harcayabilirsiniz',
+      monthlySalary: 'Aylık Maaş',
+      savedPer: 'Tasarruf Başına',
+      month: 'Ay',
+      year: 'Yıl',
+      viewAs: 'Görünüm',
+      money: 'Para',
+      time: 'Zaman',
+      timeSaved: 'Tasarruf Edilen Zaman',
+      frequency: 'Sıklık',
+      instructions: 'Her hücre, görev sıklığına göre bir ay veya yıl içinde tasarruf edilen zamanın değerini gösterir. Örneğin, günde 1 dakika tasarruf etmek ayda birkaç saate eşdeğerdir. Yılda 2.000 çalışma saatine (8 saat × 250 gün) dayalıdır.',
+      freq50day: '50/gün',
+      freq5day: '5/gün',
+      freqDaily: 'Günlük',
+      freqWeekly: 'Haftalık',
+      freqMonthly: 'Aylık',
+      freqYearly: 'Yıllık',
+      time1sec: '1 saniye',
+      time5sec: '5 saniye',
+      time30sec: '30 saniye',
+      time1min: '1 dakika',
+      time5min: '5 dakika',
+      time30min: '30 dakika',
+      time1hour: '1 saat',
+      time4hours: '4 saat',
+      time1day: '1 gün',
+    },
+    pl: {
+      title: 'Czy warto poświęcić czas?',
+      subtitleMoney: 'Ile pieniędzy możesz wydać na automatyzację zadania, zanim wydasz więcej niż zaoszczędzisz',
+      subtitleTime: 'Ile czasu możesz poświęcić na automatyzację zadania, zanim wydasz więcej niż zaoszczędzisz',
+      monthlySalary: 'Miesięczna pensja',
+      savedPer: 'Oszczędność na',
+      month: 'Miesiąc',
+      year: 'Rok',
+      viewAs: 'Pokaż jako',
+      money: 'Pieniądze',
+      time: 'Czas',
+      timeSaved: 'Zaoszczędzony czas',
+      frequency: 'Częstotliwość',
+      instructions: 'Każda komórka pokazuje wartość zaoszczędzonego czasu w miesiącu lub roku w zależności od częstotliwości zadania. Na przykład oszczędność 1 minuty dziennie odpowiada kilku godzinom miesięcznie. Na podstawie 2000 godzin pracy rocznie (8 godzin × 250 dni).',
+      freq50day: '50/dzień',
+      freq5day: '5/dzień',
+      freqDaily: 'Codziennie',
+      freqWeekly: 'Tygodniowo',
+      freqMonthly: 'Miesięcznie',
+      freqYearly: 'Rocznie',
+      time1sec: '1 sekunda',
+      time5sec: '5 sekund',
+      time30sec: '30 sekund',
+      time1min: '1 minuta',
+      time5min: '5 minut',
+      time30min: '30 minut',
+      time1hour: '1 godzina',
+      time4hours: '4 godziny',
+      time1day: '1 dzień',
+    },
+    uk: {
+      title: 'Чи варто це часу?',
+      subtitleMoney: 'Скільки грошей можна витратити на автоматизацію завдання, перш ніж витрати перевищать економію',
+      subtitleTime: 'Скільки часу можна витратити на автоматизацію завдання, перш ніж витрати перевищать економію',
+      monthlySalary: 'Місячна зарплата',
+      savedPer: 'Заощаджено за',
+      month: 'Місяць',
+      year: 'Рік',
+      viewAs: 'Показати як',
+      money: 'Гроші',
+      time: 'Час',
+      timeSaved: 'Заощаджений час',
+      frequency: 'Частота',
+      instructions: 'Кожна комірка показує цінність заощадженого часу за місяць або рік залежно від частоти завдання. Наприклад, економія 1 хвилини щодня еквівалентна кільком годинам на місяць. На основі 2000 робочих годин на рік (8 годин × 250 днів).',
+      freq50day: '50/день',
+      freq5day: '5/день',
+      freqDaily: 'Щодня',
+      freqWeekly: 'Щотижня',
+      freqMonthly: 'Щомісяця',
+      freqYearly: 'Щороку',
+      time1sec: '1 секунда',
+      time5sec: '5 секунд',
+      time30sec: '30 секунд',
+      time1min: '1 хвилина',
+      time5min: '5 хвилин',
+      time30min: '30 хвилин',
+      time1hour: '1 година',
+      time4hours: '4 години',
+      time1day: '1 день',
+    },
+    th: {
+      title: 'คุ้มค่ากับเวลาไหม?',
+      subtitleMoney: 'คุณสามารถใช้เงินเท่าไหร่ในการทำให้งานเป็นอัตโนมัติ ก่อนที่จะใช้จ่ายมากกว่าที่ประหยัดได้',
+      subtitleTime: 'คุณสามารถใช้เวลาเท่าไหร่ในการทำให้งานเป็นอัตโนมัติ ก่อนที่จะใช้จ่ายมากกว่าที่ประหยัดได้',
+      monthlySalary: 'เงินเดือน',
+      savedPer: 'ประหยัดต่อ',
+      month: 'เดือน',
+      year: 'ปี',
+      viewAs: 'แสดงเป็น',
+      money: 'เงิน',
+      time: 'เวลา',
+      timeSaved: 'เวลาที่ประหยัดได้',
+      frequency: 'ความถี่',
+      instructions: 'แต่ละเซลล์แสดงมูลค่าของเวลาที่ประหยัดได้ในหนึ่งเดือนหรือปีตามความถี่ของงาน ตัวอย่างเช่น การประหยัด 1 นาทีต่อวันเทียบเท่ากับหลายชั่วโมงต่อเดือน อิงจาก 2,000 ชั่วโมงทำงานต่อปี (8 ชั่วโมง × 250 วัน)',
+      freq50day: '50/วัน',
+      freq5day: '5/วัน',
+      freqDaily: 'ทุกวัน',
+      freqWeekly: 'ทุกสัปดาห์',
+      freqMonthly: 'ทุกเดือน',
+      freqYearly: 'ทุกปี',
+      time1sec: '1 วินาที',
+      time5sec: '5 วินาที',
+      time30sec: '30 วินาที',
+      time1min: '1 นาที',
+      time5min: '5 นาที',
+      time30min: '30 นาที',
+      time1hour: '1 ชั่วโมง',
+      time4hours: '4 ชั่วโมง',
+      time1day: '1 วัน',
+    },
+    id: {
+      title: 'Apakah sepadan dengan waktunya?',
+      subtitleMoney: 'Berapa banyak uang yang bisa Anda habiskan untuk mengotomatisasi tugas sebelum menghabiskan lebih dari yang Anda hemat',
+      subtitleTime: 'Berapa banyak waktu yang bisa Anda habiskan untuk mengotomatisasi tugas sebelum menghabiskan lebih dari yang Anda hemat',
+      monthlySalary: 'Gaji Bulanan',
+      savedPer: 'Hemat Per',
+      month: 'Bulan',
+      year: 'Tahun',
+      viewAs: 'Lihat Sebagai',
+      money: 'Uang',
+      time: 'Waktu',
+      timeSaved: 'Waktu Dihemat',
+      frequency: 'Frekuensi',
+      instructions: 'Setiap sel menunjukkan nilai waktu yang dihemat selama satu bulan atau tahun berdasarkan frekuensi tugas. Misalnya, menghemat 1 menit setiap hari setara dengan beberapa jam per bulan. Berdasarkan 2.000 jam kerja per tahun (8 jam × 250 hari).',
+      freq50day: '50/hari',
+      freq5day: '5/hari',
+      freqDaily: 'Harian',
+      freqWeekly: 'Mingguan',
+      freqMonthly: 'Bulanan',
+      freqYearly: 'Tahunan',
+      time1sec: '1 detik',
+      time5sec: '5 detik',
+      time30sec: '30 detik',
+      time1min: '1 menit',
+      time5min: '5 menit',
+      time30min: '30 menit',
+      time1hour: '1 jam',
+      time4hours: '4 jam',
+      time1day: '1 hari',
+    },
   };
 
-  // Detect user locale and get translations
-  const userLocale = navigator.language || 'en';
-  const lang = userLocale.split('-')[0];
-  const t = translations[lang] || translations.en;
-
-  // Currency mapping by region
-  function getCurrencyForLocale(locale: string): string {
-    const currencyMap: Record<string, string> = {
-      // Americas
-      'en-US': 'USD', 'en-CA': 'CAD', 'es-MX': 'MXN',
-      'es-AR': 'ARS', 'es-CL': 'CLP', 'es-CO': 'COP',
-      'pt-BR': 'BRL',
-      // Europe
-      'en-GB': 'GBP', 'en-IE': 'EUR',
-      'de-DE': 'EUR', 'de-AT': 'EUR', 'de-CH': 'CHF',
-      'fr-FR': 'EUR', 'fr-BE': 'EUR', 'fr-CH': 'CHF',
-      'es-ES': 'EUR', 'pt-PT': 'EUR',
-      'it-IT': 'EUR', 'nl-NL': 'EUR', 'nl-BE': 'EUR',
-      // Asia
-      'ja-JP': 'JPY',
-      'zh-CN': 'CNY', 'zh-TW': 'TWD', 'zh-HK': 'HKD',
-      // Russia
-      'ru-RU': 'RUB',
-      // Oceania
-      'en-AU': 'AUD', 'en-NZ': 'NZD',
-    };
-
-    // Try exact match first
-    if (currencyMap[locale]) {
-      return currencyMap[locale];
+  // Get saved language or detect from browser
+  function getSavedLanguage(): string {
+    const saved = localStorage.getItem('language');
+    if (saved && translations[saved]) {
+      return saved;
     }
-
-    // Fallback by language code
-    const langCode = locale.split('-')[0];
-    const langDefaults: Record<string, string> = {
-      'en': 'USD',
-      'es': 'EUR',
-      'fr': 'EUR',
-      'de': 'EUR',
-      'pt': 'EUR',
-      'it': 'EUR',
-      'nl': 'EUR',
-      'ja': 'JPY',
-      'zh': 'CNY',
-      'ru': 'RUB',
-    };
-
-    return langDefaults[langCode] || 'USD';
+    const browserLang = (navigator.language || 'en').split('-')[0];
+    return translations[browserLang] ? browserLang : 'en';
   }
 
-  const userCurrency = getCurrencyForLocale(userLocale);
+  let currentLang = getSavedLanguage();
+  let t = translations[currentLang];
 
   // Get currency symbol for display in salary input
   function getCurrencySymbol(currency: string): string {
     const symbols: Record<string, string> = {
       'USD': '$', 'CAD': '$', 'MXN': '$',
       'ARS': '$', 'CLP': '$', 'COP': '$',
-      'BRL': '$',
+      'BRL': 'R$',
       'GBP': '£', 'EUR': '€', 'CHF': 'Fr',
       'JPY': '¥', 'CNY': '¥', 'TWD': '$', 'HKD': '$',
-      'RUB': '₽',
+      'RUB': '₽', 'UAH': '₴',
+      'INR': '₹', 'BDT': '৳',
+      'SAR': '﷼', 'AED': 'د.إ',
+      'KRW': '₩', 'VND': '₫',
+      'TRY': '₺', 'PLN': 'zł',
+      'THB': '฿', 'IDR': 'Rp',
       'AUD': '$', 'NZD': '$',
     };
     return symbols[currency] || '$';
   }
 
-  const currencySymbol = getCurrencySymbol(userCurrency);
+  // Get currency for language (simplified mapping)
+  function getCurrencyForLang(lang: string): string {
+    const langCurrency: Record<string, string> = {
+      'en': 'USD',
+      'zh': 'CNY',
+      'hi': 'INR',
+      'es': 'EUR',
+      'fr': 'EUR',
+      'ar': 'SAR',
+      'bn': 'BDT',
+      'pt': 'BRL',
+      'ru': 'RUB',
+      'ja': 'JPY',
+      'de': 'EUR',
+      'ko': 'KRW',
+      'vi': 'VND',
+      'it': 'EUR',
+      'tr': 'TRY',
+      'pl': 'PLN',
+      'uk': 'UAH',
+      'nl': 'EUR',
+      'th': 'THB',
+      'id': 'IDR',
+    };
+    return langCurrency[lang] || 'USD';
+  }
+
+  // Default salary by currency (rounded values equivalent to ~$2000 USD)
+  function getDefaultSalaryForLang(lang: string): number {
+    const salaryByCurrency: Record<string, number> = {
+      'en': 2000,     // $2,000 USD
+      'zh': 15000,    // ¥15,000 CNY
+      'hi': 170000,   // ₹170,000 INR
+      'es': 2000,     // €2,000 EUR
+      'fr': 2000,     // €2,000 EUR
+      'ar': 7500,     // ﷼7,500 SAR
+      'bn': 200000,   // ৳200,000 BDT
+      'pt': 10000,    // R$10,000 BRL
+      'ru': 200000,   // ₽200,000 RUB
+      'ja': 300000,   // ¥300,000 JPY
+      'de': 2000,     // €2,000 EUR
+      'ko': 3000000,  // ₩3,000,000 KRW
+      'vi': 50000000, // ₫50,000,000 VND
+      'it': 2000,     // €2,000 EUR
+      'tr': 70000,    // ₺70,000 TRY
+      'pl': 8000,     // zł8,000 PLN
+      'uk': 80000,    // ₴80,000 UAH
+      'nl': 2000,     // €2,000 EUR
+      'th': 70000,    // ฿70,000 THB
+      'id': 30000000, // Rp30,000,000 IDR
+    };
+    return salaryByCurrency[lang] || 2000;
+  }
+
+  // Language metadata with flags and names
+  const languageInfo: Record<string, { flag: string; name: string }> = {
+    'en': { flag: '🇺🇸', name: 'English' },
+    'zh': { flag: '🇨🇳', name: '中文' },
+    'hi': { flag: '🇮🇳', name: 'हिन्दी' },
+    'es': { flag: '🇪🇸', name: 'Español' },
+    'fr': { flag: '🇫🇷', name: 'Français' },
+    'ar': { flag: '🇸🇦', name: 'العربية' },
+    'bn': { flag: '🇧🇩', name: 'বাংলা' },
+    'pt': { flag: '🇧🇷', name: 'Português' },
+    'ru': { flag: '🇷🇺', name: 'Русский' },
+    'ja': { flag: '🇯🇵', name: '日本語' },
+    'de': { flag: '🇩🇪', name: 'Deutsch' },
+    'ko': { flag: '🇰🇷', name: '한국어' },
+    'vi': { flag: '🇻🇳', name: 'Tiếng Việt' },
+    'it': { flag: '🇮🇹', name: 'Italiano' },
+    'tr': { flag: '🇹🇷', name: 'Türkçe' },
+    'pl': { flag: '🇵🇱', name: 'Polski' },
+    'uk': { flag: '🇺🇦', name: 'Українська' },
+    'nl': { flag: '🇳🇱', name: 'Nederlands' },
+    'th': { flag: '🇹🇭', name: 'ไทย' },
+    'id': { flag: '🇮🇩', name: 'Indonesia' },
+  };
+
+  let userCurrency = getCurrencyForLang(currentLang);
+  let currencySymbol = getCurrencySymbol(userCurrency);
 
   // Frequency and time label keys for translation
   const freqKeys = ['freq50day', 'freq5day', 'freqDaily', 'freqWeekly', 'freqMonthly', 'freqYearly'] as const;
@@ -995,12 +1383,13 @@ const preCalculatedData = timeSavings.map(time =>
 
   function updateTable() {
     const salary = parseSalary(salaryInput.value);
+    const symbolAfter = currentLang !== 'en';
 
     valueCells.forEach(cell => {
       const freqMultiplier = parseInt(cell.dataset.freqMultiplier || '0', 10);
       const timeSeconds = parseInt(cell.dataset.timeSeconds || '0', 10);
 
-      const display = getCellDisplay(salary, freqMultiplier, timeSeconds, billingPeriod, spendMode, currencySymbol);
+      const display = getCellDisplay(salary, freqMultiplier, timeSeconds, billingPeriod, spendMode, currencySymbol, symbolAfter);
 
       const valueSpan = cell.querySelector('.value') as HTMLElement;
       if (valueSpan) {
@@ -1096,6 +1485,87 @@ const preCalculatedData = timeSavings.map(time =>
       timeHeaders.forEach(h => h.classList.remove('highlight'));
     });
   });
+
+  // Language switcher
+  const langSwitcher = document.querySelector('.language-switcher') as HTMLElement;
+  const langSelector = document.getElementById('lang-selector') as HTMLButtonElement;
+  const langDropdown = document.getElementById('lang-dropdown') as HTMLElement;
+  const currentFlagEl = document.getElementById('current-flag') as HTMLElement;
+  const currentLangNameEl = document.getElementById('current-lang-name') as HTMLElement;
+  const langOptions = document.querySelectorAll<HTMLButtonElement>('.lang-option');
+
+  function updateSelectorDisplay(lang: string) {
+    const info = languageInfo[lang];
+    if (info) {
+      currentFlagEl.textContent = info.flag;
+      currentLangNameEl.textContent = info.name;
+    }
+  }
+
+  function setLanguage(lang: string) {
+    if (!translations[lang]) return;
+
+    currentLang = lang;
+    t = translations[lang];
+    localStorage.setItem('language', lang);
+
+    // Update currency for the new language
+    userCurrency = getCurrencyForLang(lang);
+    currencySymbol = getCurrencySymbol(userCurrency);
+
+    // Update salary to default for this language/currency
+    const defaultSalary = getDefaultSalaryForLang(lang);
+    salaryInput.value = defaultSalary.toLocaleString('en-US');
+
+    // Update selector display
+    updateSelectorDisplay(lang);
+
+    // Update active option state
+    langOptions.forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.lang === lang);
+    });
+
+    // Close dropdown
+    langSwitcher.classList.remove('open');
+
+    // Re-apply translations and update table
+    applyTranslations(spendMode);
+    updateTable();
+  }
+
+  // Toggle dropdown
+  langSelector.addEventListener('click', (e) => {
+    e.stopPropagation();
+    langSwitcher.classList.toggle('open');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', () => {
+    langSwitcher.classList.remove('open');
+  });
+
+  // Prevent dropdown from closing when clicking inside
+  langDropdown.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  // Language option click handlers
+  langOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      const lang = opt.dataset.lang;
+      if (lang) setLanguage(lang);
+    });
+  });
+
+  // Set initial state
+  updateSelectorDisplay(currentLang);
+  langOptions.forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.lang === currentLang);
+  });
+
+  // Set initial salary based on language
+  const initialSalary = getDefaultSalaryForLang(currentLang);
+  salaryInput.value = initialSalary.toLocaleString('en-US');
 
   // Apply translations and initial calculation
   applyTranslations(spendMode);
