@@ -19,35 +19,68 @@ const preCalculatedData = timeSavings.map(time =>
 <Layout title="Is It Worth The Time?" description="Calculate how much to spend on time-saving tools based on your salary and the time you'll save.">
   <main class="min-h-screen flex flex-col justify-center">
     <div class="site-section grow-0">
-      <div class="language-switcher">
-        <button type="button" class="lang-selector" id="lang-selector">
-          <span class="lang-flag" id="current-flag">🇺🇸</span>
-          <span class="lang-name" id="current-lang-name">English</span>
-          <svg class="lang-arrow" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-          </svg>
-        </button>
-        <div class="lang-dropdown" id="lang-dropdown">
-          <button type="button" class="lang-option" data-lang="en"><span class="lang-flag">🇺🇸</span><span>English</span></button>
-          <button type="button" class="lang-option" data-lang="zh"><span class="lang-flag">🇨🇳</span><span>中文</span></button>
-          <button type="button" class="lang-option" data-lang="hi"><span class="lang-flag">🇮🇳</span><span>हिन्दी</span></button>
-          <button type="button" class="lang-option" data-lang="es"><span class="lang-flag">🇪🇸</span><span>Español</span></button>
-          <button type="button" class="lang-option" data-lang="fr"><span class="lang-flag">🇫🇷</span><span>Français</span></button>
-          <button type="button" class="lang-option" data-lang="ar"><span class="lang-flag">🇸🇦</span><span>العربية</span></button>
-          <button type="button" class="lang-option" data-lang="bn"><span class="lang-flag">🇧🇩</span><span>বাংলা</span></button>
-          <button type="button" class="lang-option" data-lang="pt"><span class="lang-flag">🇧🇷</span><span>Português</span></button>
-          <button type="button" class="lang-option" data-lang="ru"><span class="lang-flag">🇷🇺</span><span>Русский</span></button>
-          <button type="button" class="lang-option" data-lang="ja"><span class="lang-flag">🇯🇵</span><span>日本語</span></button>
-          <button type="button" class="lang-option" data-lang="de"><span class="lang-flag">🇩🇪</span><span>Deutsch</span></button>
-          <button type="button" class="lang-option" data-lang="ko"><span class="lang-flag">🇰🇷</span><span>한국어</span></button>
-          <button type="button" class="lang-option" data-lang="vi"><span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span></button>
-          <button type="button" class="lang-option" data-lang="it"><span class="lang-flag">🇮🇹</span><span>Italiano</span></button>
-          <button type="button" class="lang-option" data-lang="tr"><span class="lang-flag">🇹🇷</span><span>Türkçe</span></button>
-          <button type="button" class="lang-option" data-lang="pl"><span class="lang-flag">🇵🇱</span><span>Polski</span></button>
-          <button type="button" class="lang-option" data-lang="uk"><span class="lang-flag">🇺🇦</span><span>Українська</span></button>
-          <button type="button" class="lang-option" data-lang="nl"><span class="lang-flag">🇳🇱</span><span>Nederlands</span></button>
-          <button type="button" class="lang-option" data-lang="th"><span class="lang-flag">🇹🇭</span><span>ไทย</span></button>
-          <button type="button" class="lang-option" data-lang="id"><span class="lang-flag">🇮🇩</span><span>Indonesia</span></button>
+      <div class="top-controls">
+        <div class="currency-switcher">
+          <button type="button" class="currency-selector" id="currency-selector">
+            <span class="currency-symbol-display" id="current-currency-symbol">$</span>
+            <span class="currency-code" id="current-currency-code">USD</span>
+            <svg class="currency-arrow" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="currency-dropdown" id="currency-dropdown">
+            <button type="button" class="currency-option" data-currency="USD"><span class="currency-sym">$</span><span>USD</span></button>
+            <button type="button" class="currency-option" data-currency="EUR"><span class="currency-sym">€</span><span>EUR</span></button>
+            <button type="button" class="currency-option" data-currency="GBP"><span class="currency-sym">£</span><span>GBP</span></button>
+            <button type="button" class="currency-option" data-currency="JPY"><span class="currency-sym">¥</span><span>JPY</span></button>
+            <button type="button" class="currency-option" data-currency="CNY"><span class="currency-sym">¥</span><span>CNY</span></button>
+            <button type="button" class="currency-option" data-currency="INR"><span class="currency-sym">₹</span><span>INR</span></button>
+            <button type="button" class="currency-option" data-currency="RUB"><span class="currency-sym">₽</span><span>RUB</span></button>
+            <button type="button" class="currency-option" data-currency="BRL"><span class="currency-sym">R$</span><span>BRL</span></button>
+            <button type="button" class="currency-option" data-currency="KRW"><span class="currency-sym">₩</span><span>KRW</span></button>
+            <button type="button" class="currency-option" data-currency="PLN"><span class="currency-sym">zł</span><span>PLN</span></button>
+            <button type="button" class="currency-option" data-currency="UAH"><span class="currency-sym">₴</span><span>UAH</span></button>
+            <button type="button" class="currency-option" data-currency="TRY"><span class="currency-sym">₺</span><span>TRY</span></button>
+            <button type="button" class="currency-option" data-currency="THB"><span class="currency-sym">฿</span><span>THB</span></button>
+            <button type="button" class="currency-option" data-currency="VND"><span class="currency-sym">₫</span><span>VND</span></button>
+            <button type="button" class="currency-option" data-currency="IDR"><span class="currency-sym">Rp</span><span>IDR</span></button>
+            <button type="button" class="currency-option" data-currency="SAR"><span class="currency-sym">﷼</span><span>SAR</span></button>
+            <button type="button" class="currency-option" data-currency="BDT"><span class="currency-sym">৳</span><span>BDT</span></button>
+            <button type="button" class="currency-option" data-currency="CAD"><span class="currency-sym">$</span><span>CAD</span></button>
+            <button type="button" class="currency-option" data-currency="AUD"><span class="currency-sym">$</span><span>AUD</span></button>
+            <button type="button" class="currency-option" data-currency="CHF"><span class="currency-sym">Fr</span><span>CHF</span></button>
+          </div>
+        </div>
+        <div class="language-switcher">
+          <button type="button" class="lang-selector" id="lang-selector">
+            <span class="lang-flag" id="current-flag">🇺🇸</span>
+            <span class="lang-name" id="current-lang-name">English</span>
+            <svg class="lang-arrow" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button type="button" class="lang-option" data-lang="en"><span class="lang-flag">🇺🇸</span><span>English</span></button>
+            <button type="button" class="lang-option" data-lang="zh"><span class="lang-flag">🇨🇳</span><span>中文</span></button>
+            <button type="button" class="lang-option" data-lang="hi"><span class="lang-flag">🇮🇳</span><span>हिन्दी</span></button>
+            <button type="button" class="lang-option" data-lang="es"><span class="lang-flag">🇪🇸</span><span>Español</span></button>
+            <button type="button" class="lang-option" data-lang="fr"><span class="lang-flag">🇫🇷</span><span>Français</span></button>
+            <button type="button" class="lang-option" data-lang="ar"><span class="lang-flag">🇸🇦</span><span>العربية</span></button>
+            <button type="button" class="lang-option" data-lang="bn"><span class="lang-flag">🇧🇩</span><span>বাংলা</span></button>
+            <button type="button" class="lang-option" data-lang="pt"><span class="lang-flag">🇧🇷</span><span>Português</span></button>
+            <button type="button" class="lang-option" data-lang="ru"><span class="lang-flag">🇷🇺</span><span>Русский</span></button>
+            <button type="button" class="lang-option" data-lang="ja"><span class="lang-flag">🇯🇵</span><span>日本語</span></button>
+            <button type="button" class="lang-option" data-lang="de"><span class="lang-flag">🇩🇪</span><span>Deutsch</span></button>
+            <button type="button" class="lang-option" data-lang="ko"><span class="lang-flag">🇰🇷</span><span>한국어</span></button>
+            <button type="button" class="lang-option" data-lang="vi"><span class="lang-flag">🇻🇳</span><span>Tiếng Việt</span></button>
+            <button type="button" class="lang-option" data-lang="it"><span class="lang-flag">🇮🇹</span><span>Italiano</span></button>
+            <button type="button" class="lang-option" data-lang="tr"><span class="lang-flag">🇹🇷</span><span>Türkçe</span></button>
+            <button type="button" class="lang-option" data-lang="pl"><span class="lang-flag">🇵🇱</span><span>Polski</span></button>
+            <button type="button" class="lang-option" data-lang="uk"><span class="lang-flag">🇺🇦</span><span>Українська</span></button>
+            <button type="button" class="lang-option" data-lang="nl"><span class="lang-flag">🇳🇱</span><span>Nederlands</span></button>
+            <button type="button" class="lang-option" data-lang="th"><span class="lang-flag">🇹🇭</span><span>ไทย</span></button>
+            <button type="button" class="lang-option" data-lang="id"><span class="lang-flag">🇮🇩</span><span>Indonesia</span></button>
+          </div>
         </div>
       </div>
       <header class="text-center mb-6 sm:mb-12 mt-10 sm:mt-0">
@@ -141,11 +174,126 @@ const preCalculatedData = timeSavings.map(time =>
 </Layout>
 
 <style>
-  .language-switcher {
+  .top-controls {
     position: absolute;
     top: 1rem;
     right: 1rem;
     z-index: 100;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .currency-switcher {
+    position: relative;
+  }
+
+  .currency-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.625rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid rgb(var(--accent-border));
+    background: rgb(var(--bg-surface));
+    color: rgb(var(--accent-grey));
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-radius: 8px;
+  }
+
+  .currency-selector:hover {
+    background: rgb(var(--bg-grey));
+    border-color: rgb(var(--accent-grey-light));
+  }
+
+  .currency-symbol-display {
+    font-size: 1rem;
+    font-weight: 600;
+    min-width: 1.25rem;
+    text-align: center;
+  }
+
+  .currency-code {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+
+  .currency-arrow {
+    width: 0.875rem;
+    height: 0.875rem;
+    transition: transform 0.2s ease;
+    opacity: 0.6;
+  }
+
+  .currency-switcher.open .currency-arrow {
+    transform: rotate(180deg);
+  }
+
+  .currency-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    min-width: 100px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: rgb(var(--bg-surface));
+    border: 1px solid rgb(var(--accent-border));
+    border-radius: 8px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+  }
+
+  .currency-switcher.open .currency-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .currency-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    text-align: left;
+    border: none;
+    background: transparent;
+    color: rgb(var(--accent-grey));
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+  }
+
+  .currency-option:first-child {
+    border-radius: 7px 7px 0 0;
+  }
+
+  .currency-option:last-child {
+    border-radius: 0 0 7px 7px;
+  }
+
+  .currency-option:hover {
+    background: rgb(var(--bg-grey));
+  }
+
+  .currency-option.active {
+    background: rgb(var(--bg-blue-light));
+    color: rgb(var(--accent-blue));
+  }
+
+  .currency-sym {
+    font-weight: 600;
+    min-width: 1.25rem;
+    text-align: center;
+  }
+
+  .language-switcher {
+    position: relative;
   }
 
   .lang-selector {
@@ -557,7 +705,7 @@ const preCalculatedData = timeSavings.map(time =>
       font-size: 0.75rem;
     }
 
-    .language-switcher {
+    .top-controls {
       top: 0.5rem;
       right: 0.5rem;
     }
@@ -574,6 +722,19 @@ const preCalculatedData = timeSavings.map(time =>
 
     .lang-flag {
       font-size: 1rem;
+    }
+
+    .currency-selector {
+      padding: 0.375rem 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .currency-symbol-display {
+      font-size: 0.9rem;
+    }
+
+    .currency-code {
+      font-size: 0.7rem;
     }
   }
 
@@ -652,6 +813,29 @@ const preCalculatedData = timeSavings.map(time =>
 
     .lang-dropdown {
       min-width: 150px;
+    }
+
+    .currency-selector {
+      padding: 0.25rem 0.375rem;
+      font-size: 0.75rem;
+    }
+
+    .currency-symbol-display {
+      font-size: 0.875rem;
+      min-width: 1rem;
+    }
+
+    .currency-code {
+      display: none;
+    }
+
+    .currency-arrow {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+
+    .currency-dropdown {
+      min-width: 90px;
     }
   }
 
@@ -1433,6 +1617,7 @@ const preCalculatedData = timeSavings.map(time =>
 
   let userCurrency = getCurrencyForLang(currentLang);
   let currencySymbol = getCurrencySymbol(userCurrency);
+  let userManuallySelectedCurrency = false; // Track if user manually chose currency
 
   // Frequency and time label keys for translation
   const freqKeys = ['freq50day', 'freq5day', 'freqDaily', 'freqWeekly', 'freqMonthly', 'freqYearly'] as const;
@@ -1628,13 +1813,30 @@ const preCalculatedData = timeSavings.map(time =>
     t = translations[lang];
     localStorage.setItem('language', lang);
 
-    // Update currency for the new language
-    userCurrency = getCurrencyForLang(lang);
-    currencySymbol = getCurrencySymbol(userCurrency);
+    // Only update currency if user hasn't manually selected one
+    if (!userManuallySelectedCurrency) {
+      userCurrency = getCurrencyForLang(lang);
+      currencySymbol = getCurrencySymbol(userCurrency);
 
-    // Update salary to default for this language/currency
-    const defaultSalary = getDefaultSalaryForLang(lang);
-    salaryInput.value = defaultSalary.toLocaleString('en-US');
+      // Update currency display
+      const currentCurrencySymbolEl = document.getElementById('current-currency-symbol');
+      const currentCurrencyCodeEl = document.getElementById('current-currency-code');
+      if (currentCurrencySymbolEl) currentCurrencySymbolEl.textContent = currencySymbol;
+      if (currentCurrencyCodeEl) currentCurrencyCodeEl.textContent = userCurrency;
+
+      // Update currency symbol in salary input
+      const currencyEl = document.getElementById('currency-symbol');
+      if (currencyEl) currencyEl.textContent = currencySymbol;
+
+      // Update active state in currency dropdown
+      document.querySelectorAll('.currency-option').forEach(opt => {
+        (opt as HTMLElement).classList.toggle('active', (opt as HTMLElement).dataset.currency === userCurrency);
+      });
+
+      // Update salary to default for this language/currency
+      const defaultSalary = getDefaultSalaryForLang(lang);
+      salaryInput.value = defaultSalary.toLocaleString('en-US');
+    }
 
     // Update selector display
     updateSelectorDisplay(lang);
@@ -1682,9 +1884,94 @@ const preCalculatedData = timeSavings.map(time =>
     opt.classList.toggle('active', opt.dataset.lang === currentLang);
   });
 
+  // Currency switcher
+  const currencySwitcher = document.querySelector('.currency-switcher') as HTMLElement;
+  const currencySelector = document.getElementById('currency-selector') as HTMLButtonElement;
+  const currencyDropdown = document.getElementById('currency-dropdown') as HTMLElement;
+  const currentCurrencySymbolEl = document.getElementById('current-currency-symbol') as HTMLElement;
+  const currentCurrencyCodeEl = document.getElementById('current-currency-code') as HTMLElement;
+  const currencyOptions = document.querySelectorAll<HTMLButtonElement>('.currency-option');
+
+  function updateCurrencyDisplay(currency: string) {
+    const symbol = getCurrencySymbol(currency);
+    currentCurrencySymbolEl.textContent = symbol;
+    currentCurrencyCodeEl.textContent = currency;
+
+    // Update active state in dropdown
+    currencyOptions.forEach(opt => {
+      opt.classList.toggle('active', opt.dataset.currency === currency);
+    });
+  }
+
+  function setCurrency(currency: string, isManual: boolean = false) {
+    userCurrency = currency;
+    currencySymbol = getCurrencySymbol(currency);
+
+    if (isManual) {
+      userManuallySelectedCurrency = true;
+      localStorage.setItem('userCurrency', currency);
+    }
+
+    // Update currency display in selector
+    updateCurrencyDisplay(currency);
+
+    // Update currency symbol in salary input
+    const currencyEl = document.getElementById('currency-symbol');
+    if (currencyEl) {
+      currencyEl.textContent = currencySymbol;
+    }
+
+    // Close dropdown
+    currencySwitcher.classList.remove('open');
+
+    // Update the table with new currency symbol
+    updateTable();
+  }
+
+  // Toggle currency dropdown
+  currencySelector.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Close language dropdown if open
+    langSwitcher.classList.remove('open');
+    currencySwitcher.classList.toggle('open');
+  });
+
+  // Close both dropdowns when clicking outside
+  document.removeEventListener('click', () => {
+    langSwitcher.classList.remove('open');
+  });
+  document.addEventListener('click', () => {
+    langSwitcher.classList.remove('open');
+    currencySwitcher.classList.remove('open');
+  });
+
+  // Prevent currency dropdown from closing when clicking inside
+  currencyDropdown.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+
+  // Currency option click handlers
+  currencyOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      const currency = opt.dataset.currency;
+      if (currency) setCurrency(currency, true);
+    });
+  });
+
+  // Check for saved currency preference
+  const savedCurrency = localStorage.getItem('userCurrency');
+  if (savedCurrency) {
+    userManuallySelectedCurrency = true;
+    userCurrency = savedCurrency;
+    currencySymbol = getCurrencySymbol(savedCurrency);
+  }
+
   // Set initial salary based on language
   const initialSalary = getDefaultSalaryForLang(currentLang);
   salaryInput.value = initialSalary.toLocaleString('en-US');
+
+  // Update currency display
+  updateCurrencyDisplay(userCurrency);
 
   // Apply translations and initial calculation
   applyTranslations(spendMode);
