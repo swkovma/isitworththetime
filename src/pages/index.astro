@@ -49,6 +49,16 @@ const preCalculatedData = timeSavings.map(time =>
             <button type="button" class="currency-option" data-currency="CAD"><span class="currency-sym">$</span><span>CAD</span></button>
             <button type="button" class="currency-option" data-currency="AUD"><span class="currency-sym">$</span><span>AUD</span></button>
             <button type="button" class="currency-option" data-currency="CHF"><span class="currency-sym">Fr</span><span>CHF</span></button>
+            <button type="button" class="currency-option" data-currency="MXN"><span class="currency-sym">$</span><span>MXN</span></button>
+            <button type="button" class="currency-option" data-currency="SGD"><span class="currency-sym">S$</span><span>SGD</span></button>
+            <button type="button" class="currency-option" data-currency="HKD"><span class="currency-sym">HK$</span><span>HKD</span></button>
+            <button type="button" class="currency-option" data-currency="SEK"><span class="currency-sym">kr</span><span>SEK</span></button>
+            <button type="button" class="currency-option" data-currency="NOK"><span class="currency-sym">kr</span><span>NOK</span></button>
+            <button type="button" class="currency-option" data-currency="DKK"><span class="currency-sym">kr</span><span>DKK</span></button>
+            <button type="button" class="currency-option" data-currency="NZD"><span class="currency-sym">$</span><span>NZD</span></button>
+            <button type="button" class="currency-option" data-currency="ZAR"><span class="currency-sym">R</span><span>ZAR</span></button>
+            <button type="button" class="currency-option" data-currency="AED"><span class="currency-sym">د.إ</span><span>AED</span></button>
+            <button type="button" class="currency-option" data-currency="MYR"><span class="currency-sym">RM</span><span>MYR</span></button>
           </div>
         </div>
         <div class="language-switcher">
@@ -1525,7 +1535,8 @@ const preCalculatedData = timeSavings.map(time =>
       'ARS': '$', 'CLP': '$', 'COP': '$',
       'BRL': 'R$',
       'GBP': '£', 'EUR': '€', 'CHF': 'Fr',
-      'JPY': '¥', 'CNY': '¥', 'TWD': '$', 'HKD': '$',
+      'JPY': '¥', 'CNY': '¥', 'TWD': '$',
+      'HKD': 'HK$', 'SGD': 'S$',
       'RUB': '₽', 'UAH': '₴',
       'INR': '₹', 'BDT': '৳',
       'SAR': '﷼', 'AED': 'د.إ',
@@ -1533,6 +1544,8 @@ const preCalculatedData = timeSavings.map(time =>
       'TRY': '₺', 'PLN': 'zł',
       'THB': '฿', 'IDR': 'Rp',
       'AUD': '$', 'NZD': '$',
+      'SEK': 'kr', 'NOK': 'kr', 'DKK': 'kr',
+      'ZAR': 'R', 'MYR': 'RM',
     };
     return symbols[currency] || '$';
   }
