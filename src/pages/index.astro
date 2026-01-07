@@ -179,6 +179,21 @@ const preCalculatedData = timeSavings.map(time =>
           Each cell shows the value of time saved over a month or year based on task frequency. For example, saving 1 minute daily is worth the equivalent of several hours per month. Based on 2,000 working hours per year (8 hours × 250 days).
         </p>
       </div>
+
+      <div class="explanation-section">
+        <div class="explanation-card">
+          <h3 data-i18n="howItWorksTitle">How It Works</h3>
+          <p data-i18n="howItWorksText">This calculator helps you decide if automating a task is worth the investment. Find the intersection of how often you do a task (columns) and how much time you save each time (rows). The cell shows the monetary value of that saved time based on your hourly rate.</p>
+        </div>
+        <div class="explanation-card">
+          <h3 data-i18n="exampleTitle">Example</h3>
+          <p data-i18n="exampleText">If you spend 5 minutes on a task you do 5 times a day, that's 25 minutes daily. Over a month (22 work days), that's ~9 hours. At $2,000/month salary, your hourly rate is ~$12. Those 9 hours are worth ~$108. So any automation under $108 pays for itself in just one month!</p>
+        </div>
+        <div class="explanation-card">
+          <h3 data-i18n="whySalaryTitle">Why Monthly Salary?</h3>
+          <p data-i18n="whySalaryText">Your salary determines your hourly rate, which is the true cost of your time. We use monthly salary because it's what most people know. The calculator assumes 2,000 working hours per year (8 hours × 250 work days), giving roughly 167 hours per month.</p>
+        </div>
+      </div>
     </div>
   </main>
 </Layout>
@@ -870,6 +885,60 @@ const preCalculatedData = timeSavings.map(time =>
       font-size: 0.75rem;
     }
   }
+
+  .explanation-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 0 0.5rem;
+  }
+
+  .explanation-card {
+    background: rgb(var(--bg-surface));
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .explanation-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgb(var(--accent-blue));
+    margin-bottom: 0.75rem;
+  }
+
+  .explanation-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: rgb(100, 116, 139);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .explanation-card p {
+      color: rgb(148, 163, 184);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .explanation-section {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .explanation-card {
+      padding: 1rem;
+    }
+
+    .explanation-card h3 {
+      font-size: 0.9rem;
+    }
+
+    .explanation-card p {
+      font-size: 0.8rem;
+    }
+  }
 </style>
 
 <script>
@@ -910,6 +979,13 @@ const preCalculatedData = timeSavings.map(time =>
     time1hour: string;
     time4hours: string;
     time1day: string;
+    // Explanation section
+    howItWorksTitle: string;
+    howItWorksText: string;
+    exampleTitle: string;
+    exampleText: string;
+    whySalaryTitle: string;
+    whySalaryText: string;
   }
 
   const translations: Record<string, Translations> = {
@@ -942,6 +1018,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 hour',
       time4hours: '4 hours',
       time1day: '1 day',
+      howItWorksTitle: 'How It Works',
+      howItWorksText: 'This calculator helps you decide if automating a task is worth the investment. Find the intersection of how often you do a task (columns) and how much time you save each time (rows). The cell shows the monetary value of that saved time based on your hourly rate.',
+      exampleTitle: 'Example',
+      exampleText: 'If you spend 5 minutes on a task you do 5 times a day, that\'s 25 minutes daily. Over a month (22 work days), that\'s ~9 hours. At $2,000/month salary, your hourly rate is ~$12. Those 9 hours are worth ~$108. So any automation under $108 pays for itself in just one month!',
+      whySalaryTitle: 'Why Monthly Salary?',
+      whySalaryText: 'Your salary determines your hourly rate, which is the true cost of your time. We use monthly salary because it\'s what most people know. The calculator assumes 2,000 working hours per year (8 hours × 250 work days), giving roughly 167 hours per month.',
     },
     es: {
       title: '¿Vale la pena el tiempo?',
@@ -972,6 +1054,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 hora',
       time4hours: '4 horas',
       time1day: '1 día',
+      howItWorksTitle: 'Cómo Funciona',
+      howItWorksText: 'Esta calculadora te ayuda a decidir si automatizar una tarea vale la inversión. Encuentra la intersección entre la frecuencia de la tarea (columnas) y el tiempo que ahorras cada vez (filas). La celda muestra el valor monetario de ese tiempo según tu tarifa por hora.',
+      exampleTitle: 'Ejemplo',
+      exampleText: 'Si dedicas 5 minutos a una tarea que haces 5 veces al día, son 25 minutos diarios. En un mes (22 días laborales), son ~9 horas. Con un salario de $2,000/mes, tu tarifa es ~$12/hora. Esas 9 horas valen ~$108. ¡Cualquier automatización menor a $108 se paga sola en un mes!',
+      whySalaryTitle: '¿Por Qué Salario Mensual?',
+      whySalaryText: 'Tu salario determina tu tarifa por hora, que es el costo real de tu tiempo. Usamos salario mensual porque es lo que la mayoría conoce. La calculadora asume 2,000 horas laborales al año (8 horas × 250 días), dando aproximadamente 167 horas al mes.',
     },
     fr: {
       title: 'Est-ce que ça vaut le temps?',
@@ -1002,6 +1090,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 heure',
       time4hours: '4 heures',
       time1day: '1 jour',
+      howItWorksTitle: 'Comment Ça Marche',
+      howItWorksText: 'Ce calculateur vous aide à décider si automatiser une tâche vaut l\'investissement. Trouvez l\'intersection entre la fréquence de la tâche (colonnes) et le temps économisé à chaque fois (lignes). La cellule montre la valeur monétaire de ce temps selon votre taux horaire.',
+      exampleTitle: 'Exemple',
+      exampleText: 'Si vous passez 5 minutes sur une tâche que vous faites 5 fois par jour, ça fait 25 minutes quotidiennes. Sur un mois (22 jours ouvrés), c\'est ~9 heures. Avec un salaire de 2 000€/mois, votre taux horaire est ~12€. Ces 9 heures valent ~108€. Toute automatisation sous 108€ est rentabilisée en un mois!',
+      whySalaryTitle: 'Pourquoi le Salaire Mensuel?',
+      whySalaryText: 'Votre salaire détermine votre taux horaire, le vrai coût de votre temps. Nous utilisons le salaire mensuel car c\'est ce que la plupart des gens connaissent. Le calculateur assume 2 000 heures de travail par an (8h × 250 jours), soit environ 167 heures par mois.',
     },
     de: {
       title: 'Lohnt sich die Zeit?',
@@ -1032,6 +1126,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 Stunde',
       time4hours: '4 Stunden',
       time1day: '1 Tag',
+      howItWorksTitle: 'So Funktioniert Es',
+      howItWorksText: 'Dieser Rechner hilft dir zu entscheiden, ob sich die Automatisierung einer Aufgabe lohnt. Finde die Schnittstelle zwischen Aufgabenhäufigkeit (Spalten) und eingesparter Zeit pro Durchführung (Zeilen). Die Zelle zeigt den Geldwert dieser Zeit basierend auf deinem Stundensatz.',
+      exampleTitle: 'Beispiel',
+      exampleText: 'Wenn du 5 Minuten für eine Aufgabe brauchst, die du 5-mal täglich machst, sind das 25 Minuten pro Tag. In einem Monat (22 Arbeitstage) sind das ~9 Stunden. Bei 2.000€/Monat Gehalt beträgt dein Stundensatz ~12€. Diese 9 Stunden sind ~108€ wert. Jede Automatisierung unter 108€ amortisiert sich in einem Monat!',
+      whySalaryTitle: 'Warum Monatsgehalt?',
+      whySalaryText: 'Dein Gehalt bestimmt deinen Stundensatz, die wahren Kosten deiner Zeit. Wir verwenden das Monatsgehalt, da es den meisten bekannt ist. Der Rechner geht von 2.000 Arbeitsstunden pro Jahr aus (8h × 250 Tage), also etwa 167 Stunden pro Monat.',
     },
     pt: {
       title: 'Vale a pena o tempo?',
@@ -1062,6 +1162,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 hora',
       time4hours: '4 horas',
       time1day: '1 dia',
+      howItWorksTitle: 'Como Funciona',
+      howItWorksText: 'Esta calculadora ajuda você a decidir se automatizar uma tarefa vale o investimento. Encontre a interseção entre a frequência da tarefa (colunas) e o tempo economizado cada vez (linhas). A célula mostra o valor monetário desse tempo com base na sua taxa horária.',
+      exampleTitle: 'Exemplo',
+      exampleText: 'Se você gasta 5 minutos em uma tarefa que faz 5 vezes por dia, são 25 minutos diários. Em um mês (22 dias úteis), são ~9 horas. Com salário de R$2.000/mês, sua taxa é ~R$12/hora. Essas 9 horas valem ~R$108. Qualquer automação abaixo de R$108 se paga em um mês!',
+      whySalaryTitle: 'Por Que Salário Mensal?',
+      whySalaryText: 'Seu salário determina sua taxa horária, o custo real do seu tempo. Usamos salário mensal porque é o que a maioria conhece. A calculadora assume 2.000 horas de trabalho por ano (8h × 250 dias), dando aproximadamente 167 horas por mês.',
     },
     zh: {
       title: '值得花时间吗？',
@@ -1092,6 +1198,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1小时',
       time4hours: '4小时',
       time1day: '1天',
+      howItWorksTitle: '工作原理',
+      howItWorksText: '这个计算器帮助你决定自动化任务是否值得投资。找到任务频率（列）和每次节省时间（行）的交叉点。单元格显示基于你时薪的时间货币价值。',
+      exampleTitle: '示例',
+      exampleText: '如果你每天做5次一个任务，每次5分钟，那就是每天25分钟。一个月（22个工作日）大约9小时。月薪¥15,000，时薪约¥90。这9小时价值约¥810。任何低于¥810的自动化一个月就能回本！',
+      whySalaryTitle: '为什么用月薪？',
+      whySalaryText: '你的薪资决定了时薪，即时间的真实成本。我们使用月薪是因为大多数人更熟悉。计算器假设每年2,000工作小时（8小时×250天），每月约167小时。',
     },
     ja: {
       title: '時間をかける価値はある？',
@@ -1122,6 +1234,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1時間',
       time4hours: '4時間',
       time1day: '1日',
+      howItWorksTitle: '仕組み',
+      howItWorksText: 'この計算機はタスクの自動化が投資に見合うかを判断するのに役立ちます。タスクの頻度（列）と毎回節約できる時間（行）の交点を見つけてください。セルには時給に基づいた時間の金銭的価値が表示されます。',
+      exampleTitle: '例',
+      exampleText: '1日5回、5分かかるタスクがあれば、毎日25分です。1ヶ月（22営業日）で約9時間。月収¥300,000なら時給約¥1,800。この9時間は約¥16,200の価値があります。¥16,200未満の自動化なら1ヶ月で元が取れます！',
+      whySalaryTitle: 'なぜ月収？',
+      whySalaryText: '給与が時給を決め、それが時間の本当のコストです。月収を使うのは、ほとんどの人がそれを知っているからです。計算機は年間2,000労働時間（8時間×250日）、月約167時間を想定しています。',
     },
     it: {
       title: 'Vale la pena il tempo?',
@@ -1152,6 +1270,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 ora',
       time4hours: '4 ore',
       time1day: '1 giorno',
+      howItWorksTitle: 'Come Funziona',
+      howItWorksText: 'Questo calcolatore ti aiuta a decidere se automatizzare un\'attività vale l\'investimento. Trova l\'intersezione tra la frequenza dell\'attività (colonne) e il tempo risparmiato ogni volta (righe). La cella mostra il valore monetario di quel tempo in base alla tua tariffa oraria.',
+      exampleTitle: 'Esempio',
+      exampleText: 'Se dedichi 5 minuti a un\'attività che fai 5 volte al giorno, sono 25 minuti giornalieri. In un mese (22 giorni lavorativi), sono ~9 ore. Con uno stipendio di €2.000/mese, la tua tariffa è ~€12/ora. Quelle 9 ore valgono ~€108. Qualsiasi automazione sotto €108 si ripaga in un mese!',
+      whySalaryTitle: 'Perché lo Stipendio Mensile?',
+      whySalaryText: 'Il tuo stipendio determina la tariffa oraria, il vero costo del tuo tempo. Usiamo lo stipendio mensile perché è quello che la maggior parte conosce. Il calcolatore assume 2.000 ore lavorative all\'anno (8h × 250 giorni), circa 167 ore al mese.',
     },
     nl: {
       title: 'Is het de tijd waard?',
@@ -1182,6 +1306,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 uur',
       time4hours: '4 uur',
       time1day: '1 dag',
+      howItWorksTitle: 'Hoe Het Werkt',
+      howItWorksText: 'Deze calculator helpt je beslissen of het automatiseren van een taak de investering waard is. Vind het snijpunt van taakfrequentie (kolommen) en bespaarde tijd per keer (rijen). De cel toont de geldwaarde van die tijd op basis van je uurtarief.',
+      exampleTitle: 'Voorbeeld',
+      exampleText: 'Als je 5 minuten besteedt aan een taak die je 5 keer per dag doet, is dat 25 minuten dagelijks. In een maand (22 werkdagen) is dat ~9 uur. Bij €2.000/maand salaris is je uurtarief ~€12. Die 9 uur zijn ~€108 waard. Elke automatisering onder €108 verdient zichzelf terug in één maand!',
+      whySalaryTitle: 'Waarom Maandsalaris?',
+      whySalaryText: 'Je salaris bepaalt je uurtarief, de werkelijke kosten van je tijd. We gebruiken maandsalaris omdat de meeste mensen dat kennen. De calculator gaat uit van 2.000 werkuren per jaar (8u × 250 dagen), ongeveer 167 uur per maand.',
     },
     ru: {
       title: 'Стоит ли это времени?',
@@ -1212,6 +1342,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 час',
       time4hours: '4 часа',
       time1day: '1 день',
+      howItWorksTitle: 'Как Это Работает',
+      howItWorksText: 'Этот калькулятор поможет решить, стоит ли автоматизация задачи инвестиций. Найдите пересечение частоты задачи (столбцы) и экономии времени за раз (строки). Ячейка показывает денежную стоимость этого времени на основе вашей почасовой ставки.',
+      exampleTitle: 'Пример',
+      exampleText: 'Если вы тратите 5 минут на задачу, которую делаете 5 раз в день — это 25 минут ежедневно. За месяц (22 рабочих дня) это ~9 часов. При зарплате ₽200,000/месяц ваша ставка ~₽1,200/час. Эти 9 часов стоят ~₽10,800. Любая автоматизация дешевле ₽10,800 окупится за месяц!',
+      whySalaryTitle: 'Почему Месячная Зарплата?',
+      whySalaryText: 'Ваша зарплата определяет почасовую ставку — реальную стоимость вашего времени. Мы используем месячную зарплату, потому что её знает большинство. Калькулятор предполагает 2,000 рабочих часов в год (8ч × 250 дней), примерно 167 часов в месяц.',
     },
     hi: {
       title: 'क्या यह समय के लायक है?',
@@ -1242,6 +1378,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 घंटा',
       time4hours: '4 घंटे',
       time1day: '1 दिन',
+      howItWorksTitle: 'यह कैसे काम करता है',
+      howItWorksText: 'यह कैलकुलेटर आपको तय करने में मदद करता है कि किसी कार्य को स्वचालित करना निवेश के लायक है या नहीं। कार्य की आवृत्ति (कॉलम) और हर बार बचाए गए समय (पंक्तियाँ) का प्रतिच्छेदन खोजें। सेल आपकी प्रति घंटा दर के आधार पर उस समय का मौद्रिक मूल्य दिखाता है।',
+      exampleTitle: 'उदाहरण',
+      exampleText: 'अगर आप किसी कार्य पर 5 मिनट खर्च करते हैं जो आप दिन में 5 बार करते हैं, तो यह रोजाना 25 मिनट है। एक महीने (22 कार्य दिवस) में यह ~9 घंटे है। ₹50,000/माह वेतन पर, आपकी दर ~₹300/घंटा है। ये 9 घंटे ~₹2,700 के लायक हैं। ₹2,700 से कम का कोई भी स्वचालन एक महीने में वापस मिल जाता है!',
+      whySalaryTitle: 'मासिक वेतन क्यों?',
+      whySalaryText: 'आपका वेतन आपकी प्रति घंटा दर निर्धारित करता है, जो आपके समय की वास्तविक लागत है। हम मासिक वेतन का उपयोग करते हैं क्योंकि अधिकांश लोग इसे जानते हैं। कैलकुलेटर प्रति वर्ष 2,000 कार्य घंटे (8 घंटे × 250 दिन) मानता है, प्रति माह लगभग 167 घंटे।',
     },
     ar: {
       title: 'هل يستحق الوقت؟',
@@ -1272,6 +1414,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 ساعة',
       time4hours: '4 ساعات',
       time1day: '1 يوم',
+      howItWorksTitle: 'كيف يعمل',
+      howItWorksText: 'تساعدك هذه الآلة الحاسبة على تحديد ما إذا كانت أتمتة مهمة تستحق الاستثمار. ابحث عن تقاطع تكرار المهمة (الأعمدة) والوقت الموفر في كل مرة (الصفوف). تُظهر الخلية القيمة النقدية لذلك الوقت بناءً على أجرك بالساعة.',
+      exampleTitle: 'مثال',
+      exampleText: 'إذا كنت تقضي 5 دقائق في مهمة تقوم بها 5 مرات يومياً، فهذا 25 دقيقة يومياً. في شهر (22 يوم عمل)، هذا ~9 ساعات. براتب 7,500﷼/شهر، أجرك ~45﷼/ساعة. هذه الـ9 ساعات تساوي ~405﷼. أي أتمتة أقل من 405﷼ تسترد نفسها في شهر واحد!',
+      whySalaryTitle: 'لماذا الراتب الشهري؟',
+      whySalaryText: 'راتبك يحدد أجرك بالساعة، وهو التكلفة الحقيقية لوقتك. نستخدم الراتب الشهري لأنه ما يعرفه معظم الناس. تفترض الآلة الحاسبة 2,000 ساعة عمل سنوياً (8 ساعات × 250 يوم)، أي حوالي 167 ساعة شهرياً.',
     },
     bn: {
       title: 'এটা কি সময়ের মূল্য?',
@@ -1302,6 +1450,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 ঘণ্টা',
       time4hours: '4 ঘণ্টা',
       time1day: '1 দিন',
+      howItWorksTitle: 'এটি কীভাবে কাজ করে',
+      howItWorksText: 'এই ক্যালকুলেটর আপনাকে সিদ্ধান্ত নিতে সাহায্য করে যে একটি কাজ স্বয়ংক্রিয় করা বিনিয়োগের মূল্য কিনা। কাজের ফ্রিকোয়েন্সি (কলাম) এবং প্রতিবার সাশ্রয়কৃত সময়ের (সারি) ছেদ খুঁজুন। সেলটি আপনার ঘণ্টা প্রতি হারের উপর ভিত্তি করে সেই সময়ের আর্থিক মূল্য দেখায়।',
+      exampleTitle: 'উদাহরণ',
+      exampleText: 'আপনি যদি দিনে 5 বার করেন এমন একটি কাজে 5 মিনিট ব্যয় করেন, তাহলে এটি প্রতিদিন 25 মিনিট। এক মাসে (22 কর্মদিবস), এটি ~9 ঘণ্টা। ৳50,000/মাস বেতনে, আপনার হার ~৳300/ঘণ্টা। এই 9 ঘণ্টার মূল্য ~৳2,700। ৳2,700 এর কম যেকোনো অটোমেশন এক মাসে পরিশোধ হয়ে যায়!',
+      whySalaryTitle: 'মাসিক বেতন কেন?',
+      whySalaryText: 'আপনার বেতন আপনার ঘণ্টা প্রতি হার নির্ধারণ করে, যা আপনার সময়ের প্রকৃত খরচ। আমরা মাসিক বেতন ব্যবহার করি কারণ বেশিরভাগ মানুষ এটি জানে। ক্যালকুলেটর প্রতি বছর 2,000 কাজের ঘণ্টা (8 ঘণ্টা × 250 দিন) ধরে নেয়, প্রতি মাসে প্রায় 167 ঘণ্টা।',
     },
     ko: {
       title: '시간을 들일 가치가 있을까?',
@@ -1332,6 +1486,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1시간',
       time4hours: '4시간',
       time1day: '1일',
+      howItWorksTitle: '작동 방식',
+      howItWorksText: '이 계산기는 작업 자동화가 투자 가치가 있는지 결정하는 데 도움을 줍니다. 작업 빈도(열)와 매번 절약되는 시간(행)의 교차점을 찾으세요. 셀은 시급을 기준으로 해당 시간의 금전적 가치를 보여줍니다.',
+      exampleTitle: '예시',
+      exampleText: '하루에 5번 하는 작업에 5분씩 쓴다면, 매일 25분입니다. 한 달(22일 근무)이면 약 9시간입니다. 월급 ₩3,000,000이면 시급은 약 ₩18,000입니다. 이 9시간은 약 ₩162,000의 가치가 있습니다. ₩162,000 미만의 자동화는 한 달 만에 본전을 뽑습니다!',
+      whySalaryTitle: '왜 월급인가요?',
+      whySalaryText: '급여가 시급을 결정하며, 이것이 시간의 진정한 비용입니다. 대부분의 사람들이 알고 있는 것이 월급이기 때문에 월급을 사용합니다. 계산기는 연간 2,000 근무시간(8시간 × 250일), 월 약 167시간을 가정합니다.',
     },
     vi: {
       title: 'Có đáng để bỏ thời gian?',
@@ -1362,6 +1522,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 giờ',
       time4hours: '4 giờ',
       time1day: '1 ngày',
+      howItWorksTitle: 'Cách Hoạt Động',
+      howItWorksText: 'Máy tính này giúp bạn quyết định xem tự động hóa một công việc có đáng đầu tư không. Tìm giao điểm của tần suất công việc (cột) và thời gian tiết kiệm mỗi lần (hàng). Ô hiển thị giá trị tiền tệ của thời gian đó dựa trên mức lương theo giờ của bạn.',
+      exampleTitle: 'Ví Dụ',
+      exampleText: 'Nếu bạn dành 5 phút cho một công việc làm 5 lần/ngày, đó là 25 phút mỗi ngày. Một tháng (22 ngày làm việc), đó là ~9 giờ. Với lương 20.000.000₫/tháng, mức lương theo giờ là ~120.000₫. 9 giờ đó trị giá ~1.080.000₫. Bất kỳ tự động hóa nào dưới 1.080.000₫ sẽ hoàn vốn trong một tháng!',
+      whySalaryTitle: 'Tại Sao Lương Hàng Tháng?',
+      whySalaryText: 'Lương của bạn xác định mức lương theo giờ, chi phí thực sự của thời gian. Chúng tôi sử dụng lương hàng tháng vì đó là điều hầu hết mọi người biết. Máy tính giả định 2.000 giờ làm việc mỗi năm (8 giờ × 250 ngày), khoảng 167 giờ mỗi tháng.',
     },
     tr: {
       title: 'Zaman harcamaya değer mi?',
@@ -1392,6 +1558,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 saat',
       time4hours: '4 saat',
       time1day: '1 gün',
+      howItWorksTitle: 'Nasıl Çalışır',
+      howItWorksText: 'Bu hesap makinesi, bir görevi otomatikleştirmenin yatırıma değip değmeyeceğine karar vermenize yardımcı olur. Görev sıklığı (sütunlar) ve her seferinde tasarruf edilen zaman (satırlar) kesişimini bulun. Hücre, saatlik ücretinize göre bu zamanın parasal değerini gösterir.',
+      exampleTitle: 'Örnek',
+      exampleText: 'Günde 5 kez yaptığınız bir görev için 5 dakika harcıyorsanız, günlük 25 dakika. Bir ayda (22 iş günü), bu ~9 saat. ₺50.000/ay maaşla, saatlik ücretiniz ~₺300. Bu 9 saat ~₺2.700 değerinde. ₺2.700\'den düşük herhangi bir otomasyon bir ayda kendini amorte eder!',
+      whySalaryTitle: 'Neden Aylık Maaş?',
+      whySalaryText: 'Maaşınız saatlik ücretinizi belirler, bu da zamanınızın gerçek maliyetidir. Çoğu insanın bildiği şey olduğu için aylık maaş kullanıyoruz. Hesap makinesi yılda 2.000 çalışma saati (8 saat × 250 gün), ayda yaklaşık 167 saat varsayar.',
     },
     pl: {
       title: 'Czy warto poświęcić czas?',
@@ -1422,6 +1594,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 godzina',
       time4hours: '4 godziny',
       time1day: '1 dzień',
+      howItWorksTitle: 'Jak To Działa',
+      howItWorksText: 'Ten kalkulator pomaga zdecydować, czy automatyzacja zadania jest warta inwestycji. Znajdź przecięcie częstotliwości zadania (kolumny) i zaoszczędzonego czasu za każdym razem (wiersze). Komórka pokazuje wartość pieniężną tego czasu na podstawie Twojej stawki godzinowej.',
+      exampleTitle: 'Przykład',
+      exampleText: 'Jeśli poświęcasz 5 minut na zadanie, które robisz 5 razy dziennie, to 25 minut dziennie. W miesiącu (22 dni robocze), to ~9 godzin. Przy pensji 8,000zł/miesiąc, Twoja stawka to ~48zł/godzinę. Te 9 godzin jest warte ~432zł. Każda automatyzacja poniżej 432zł zwraca się w miesiąc!',
+      whySalaryTitle: 'Dlaczego Miesięczna Pensja?',
+      whySalaryText: 'Twoja pensja określa stawkę godzinową, czyli rzeczywisty koszt Twojego czasu. Używamy pensji miesięcznej, bo to jest to, co większość ludzi zna. Kalkulator zakłada 2,000 godzin pracy rocznie (8h × 250 dni), czyli około 167 godzin miesięcznie.',
     },
     uk: {
       title: 'Чи варто це часу?',
@@ -1452,6 +1630,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 година',
       time4hours: '4 години',
       time1day: '1 день',
+      howItWorksTitle: 'Як Це Працює',
+      howItWorksText: 'Цей калькулятор допомагає вирішити, чи варта автоматизація завдання інвестицій. Знайдіть перетин частоти завдання (стовпці) та заощадженого часу щоразу (рядки). Клітинка показує грошову вартість цього часу на основі вашої погодинної ставки.',
+      exampleTitle: 'Приклад',
+      exampleText: 'Якщо ви витрачаєте 5 хвилин на завдання, яке робите 5 разів на день — це 25 хвилин щодня. За місяць (22 робочі дні) це ~9 годин. При зарплаті ₴50,000/місяць ваша ставка ~₴300/годину. Ці 9 годин коштують ~₴2,700. Будь-яка автоматизація дешевше ₴2,700 окупиться за місяць!',
+      whySalaryTitle: 'Чому Місячна Зарплата?',
+      whySalaryText: 'Ваша зарплата визначає погодинну ставку — справжню вартість вашого часу. Ми використовуємо місячну зарплату, бо її знає більшість. Калькулятор припускає 2,000 робочих годин на рік (8г × 250 днів), приблизно 167 годин на місяць.',
     },
     th: {
       title: 'คุ้มค่ากับเวลาไหม?',
@@ -1482,6 +1666,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 ชั่วโมง',
       time4hours: '4 ชั่วโมง',
       time1day: '1 วัน',
+      howItWorksTitle: 'วิธีการทำงาน',
+      howItWorksText: 'เครื่องคิดเลขนี้ช่วยคุณตัดสินใจว่าการทำงานอัตโนมัติคุ้มค่าการลงทุนหรือไม่ หาจุดตัดของความถี่งาน (คอลัมน์) และเวลาที่ประหยัดได้แต่ละครั้ง (แถว) เซลล์แสดงมูลค่าเป็นเงินของเวลานั้นตามอัตราค่าจ้างต่อชั่วโมง',
+      exampleTitle: 'ตัวอย่าง',
+      exampleText: 'ถ้าคุณใช้เวลา 5 นาทีกับงานที่ทำ 5 ครั้งต่อวัน นั่นคือ 25 นาทีต่อวัน ในหนึ่งเดือน (22 วันทำงาน) เป็น ~9 ชั่วโมง เงินเดือน ฿30,000/เดือน อัตราค่าจ้าง ~฿180/ชั่วโมง 9 ชั่วโมงนั้นมีมูลค่า ~฿1,620 การทำงานอัตโนมัติที่ต่ำกว่า ฿1,620 จะคุ้มทุนในหนึ่งเดือน!',
+      whySalaryTitle: 'ทำไมต้องเงินเดือน?',
+      whySalaryText: 'เงินเดือนกำหนดอัตราค่าจ้างต่อชั่วโมง ซึ่งเป็นต้นทุนที่แท้จริงของเวลา เราใช้เงินเดือนเพราะคนส่วนใหญ่รู้จัก เครื่องคิดเลขสมมติ 2,000 ชั่วโมงทำงานต่อปี (8 ชั่วโมง × 250 วัน) ประมาณ 167 ชั่วโมงต่อเดือน',
     },
     id: {
       title: 'Apakah sepadan dengan waktunya?',
@@ -1512,6 +1702,12 @@ const preCalculatedData = timeSavings.map(time =>
       time1hour: '1 jam',
       time4hours: '4 jam',
       time1day: '1 hari',
+      howItWorksTitle: 'Cara Kerjanya',
+      howItWorksText: 'Kalkulator ini membantu Anda memutuskan apakah mengotomatisasi tugas sepadan dengan investasinya. Temukan perpotongan frekuensi tugas (kolom) dan waktu yang dihemat setiap kali (baris). Sel menunjukkan nilai uang dari waktu tersebut berdasarkan tarif per jam Anda.',
+      exampleTitle: 'Contoh',
+      exampleText: 'Jika Anda menghabiskan 5 menit untuk tugas yang dilakukan 5 kali sehari, itu 25 menit setiap hari. Dalam sebulan (22 hari kerja), itu ~9 jam. Dengan gaji Rp10.000.000/bulan, tarif Anda ~Rp60.000/jam. 9 jam itu bernilai ~Rp540.000. Otomatisasi apapun di bawah Rp540.000 akan balik modal dalam sebulan!',
+      whySalaryTitle: 'Mengapa Gaji Bulanan?',
+      whySalaryText: 'Gaji Anda menentukan tarif per jam, yang merupakan biaya sebenarnya dari waktu Anda. Kami menggunakan gaji bulanan karena itulah yang diketahui kebanyakan orang. Kalkulator mengasumsikan 2.000 jam kerja per tahun (8 jam × 250 hari), sekitar 167 jam per bulan.',
     },
   };
 
