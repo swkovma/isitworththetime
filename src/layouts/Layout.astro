@@ -51,6 +51,15 @@ const canonicalUrl = siteUrl ? new URL(currentPath, siteUrl).toString() : undefi
   <link rel="preload" href="/fonts/subset-IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/fonts/subset-IBMPlexSans-Medium.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <link rel="preload" href="/fonts/subset-IBMPlexSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+  <!-- Google Analytics -->
+  <script async is:inline src="https://www.googletagmanager.com/gtag/js?id=G-NHENJLZ9WH"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NHENJLZ9WH');
+  </script>
 </head>
 <body>
 <slot/>
